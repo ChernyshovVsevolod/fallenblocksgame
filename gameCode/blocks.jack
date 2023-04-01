@@ -1,0 +1,32 @@
+class Rectangle {
+    field int x, y;
+    field char blocktype;
+
+    constractor Rectangle new(int rx, int ry) {
+        let x = rx;
+        let y = ry;
+        do draw();
+        return this;
+    }
+
+    method void Dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void Draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 510\10 , y + 254\6);
+        return;
+    }
+
+    method void Erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + 510\10 , y + 254\6);
+        return;
+    }
+
+    method void MoveDown() {
+        let y = y + 254/6;
+    }
+}
