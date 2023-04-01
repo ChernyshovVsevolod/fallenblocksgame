@@ -1,0 +1,120 @@
+class GameCycle{
+    field int blockMovementPeriod;
+    field int blockDelay;
+    field int blockTicks;
+    field int standartDelay;
+    field int screenWidth;
+    field int screenHeigth;
+    field Array blockArr;
+    field Player player;
+    field LCGenerator random;
+    field bool isNotFinished;
+    field int bitmask;
+
+    constructor GameCycle new(){
+        var int i, j;
+        var Array bufferArr;
+        let bitmask = 15872; //0001111100000???
+        let blockDelay = 0;
+        let blockMovementPeriod = 20;
+        let blockTicks = 0;
+        let standartDelay = 30;
+        let screenWidth = 16;
+        let screenHeigth = 8;
+        let isNotFinished = true;
+        let blockArr = Array.new(screenHeigth);
+        let i = 0;
+        while (i < screenHeigth){
+            let bufferArr = Array.new(screenWidth);
+            let blockArr[i] = bufferArr;
+            let j = 0;
+            while (j < screenWidth){
+                let bufferArr[j] = 0;
+            }
+        }
+        let player = Player.new();
+        let random = LCGenerator.new(7394);
+        return this;
+    }
+
+    method void game(){
+        var Array upRow, downRow;
+        var int rowNum, columnNum;
+        var Block blockBuffer;
+        var bool isRowComplete;
+        var int randomBlockPos;
+        while (isNotFinished){
+            //try move blocks
+            if (blockTicks > blockMovementPeriod){
+                let blockTicks = 0;
+                let rowNum = screenHeigth - 2;
+                let downRow = blockArr[screenHeigth - 1];
+                //check if blocks can fall
+                while (~(rowNum = 0)){
+                    let upRow = blockArr[rowNum];
+                    let columnNum = screenWidth - 1;
+                    //move blocks
+                    while (~(columnNum = 0)){
+                        if (~(upRow[columnNum] = 0)){
+                            if (downRow[columnNum] = 0){
+                                let blockBuffer = upRow[columnNum];
+                                let upRow[columnNum] = 0;
+                                let downRow[columnNum] = blockBuffer;
+                                do blockBuffer.erase();
+                                do blockBuffer.moveDown();
+                                do blockBuffer.draw();
+                            }
+                        }
+                        let columnNum = columnNum - 1;
+                    }
+                    //check down row completeness and erase if so
+                    let columnNum = 0;
+                    let isRowComplete = true;
+                    while (columnNum < screenWidth){
+                        if (downRow[columnNum] = 0){
+                            let isRowComplete = false;
+                        }
+                    }
+                    if (isRowComplete){
+                        let columnNum = 0;
+                        while (columnNum < screenWidth){
+                            let blockBuffer = downRow[columnNum];
+                            let downRow[columnNum] = 0;
+                            do blockBuffer.erase();
+                            do blockBuffer.dispose();
+                        }
+                    }
+
+                    let downRow = upRow;
+                    let rowNum = rowNum - 1;
+                }
+                //add random block
+                
+            }
+            //try move player
+            //try add new blocks
+            let randomBlockPos = (random.nextInt() & bitmask) / 512;
+            let randomBlockPos = randomBlockPos - (screenWidth * (randomBlockPos / screenWidth));
+            let blockBuffer = Block.new();
+            let upRow = blockArr[0];
+            let upRow[randomBlockPos] = blockBuffer;
+            do blockBuffer.draw();
+            //move timer
+            let blockTicks = blockTicks + 1;
+        }
+        return;
+    }
+
+    method void dispose(){
+        var int i;
+        var Array a;
+        let i = 0;
+        while (i < screenWidth){
+            let a = blockArr[i];
+            do a.dispose();
+        }
+        do blockArr.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}
