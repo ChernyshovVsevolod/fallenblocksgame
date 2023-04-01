@@ -1,0 +1,8 @@
+class Main{
+    function void main() {
+        var GameCycle gameCycle;
+        let gameCycle = GameCycle.new();
+        do gameCycle.game();
+        return;
+    }
+}

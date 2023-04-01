@@ -10,6 +10,8 @@ class GameCycle{
     field LCGenerator random;
     field bool isNotFinished;
     field int bitmask;
+    field int newBlocksRarity;
+    field int newBlockTicks;
 
     constructor GameCycle new(){
         var int i, j;
@@ -22,6 +24,8 @@ class GameCycle{
         let screenWidth = 10;   //
         let screenHeigth = 6;   //
         let isNotFinished = true;
+        let newBlocksRarity = 20;
+        let newBlockTicks = 0;
         let blockArr = Array.new(screenHeigth);
         let i = 0;
         while (i < screenHeigth){
@@ -30,9 +34,11 @@ class GameCycle{
             let j = 0;
             while (j < screenWidth){
                 let bufferArr[j] = 0;
+                let j = j + 1;
             }
+            let i = i + 1;
         }
-        let player = Player.new(0, 0);
+        //let player = Player.new(0, 0);
         let random = LCGenerator.new(7394);
         return this;
     }
@@ -50,11 +56,11 @@ class GameCycle{
                 let rowNum = screenHeigth - 2;
                 let downRow = blockArr[screenHeigth - 1];
                 //check if blocks can fall
-                while (~(rowNum = 0)){
+                while (rowNum > -1){
                     let upRow = blockArr[rowNum];
                     let columnNum = screenWidth - 1;
                     //move blocks
-                    while (~(columnNum = 0)){
+                    while (columnNum > -1){
                         if (~(upRow[columnNum] = 0)){
                             if (downRow[columnNum] = 0){
                                 let blockBuffer = upRow[columnNum];
@@ -74,6 +80,7 @@ class GameCycle{
                         if (downRow[columnNum] = 0){
                             let isRowComplete = false;
                         }
+                        let columnNum = columnNum + 1;
                     }
                     if (isRowComplete){
                         let columnNum = 0;
@@ -82,6 +89,7 @@ class GameCycle{
                             let downRow[columnNum] = 0;
                             do blockBuffer.erase();
                             do blockBuffer.dispose();
+                            let columnNum = columnNum + 1;
                         }
                     }
 
@@ -89,16 +97,20 @@ class GameCycle{
                     let rowNum = rowNum - 1;
                 }
                 //add random block
-                
+                if (newBlockTicks > newBlocksRarity){
+                    //try add new blocks
+                    let randomBlockPos = (random.nextInt() & bitmask) / 512;
+                    let randomBlockPos = randomBlockPos - (screenWidth * (randomBlockPos / screenWidth));
+                    let blockBuffer = Block.new(51 * randomBlockPos, 0);
+                    let upRow = blockArr[0];
+                    let upRow[randomBlockPos] = blockBuffer;
+                    do blockBuffer.draw();
+                    let newBlockTicks = 0;
+                }
+                let newBlockTicks = newBlockTicks + 1;
             }
             //try move player
-            //try add new blocks
-            let randomBlockPos = (random.nextInt() & bitmask) / 512;
-            let randomBlockPos = randomBlockPos - (screenWidth * (randomBlockPos / screenWidth));
-            let blockBuffer = Block.new(51 * randomBlockPos, 0);
-            let upRow = blockArr[0];
-            let upRow[randomBlockPos] = blockBuffer;
-            do blockBuffer.draw();
+            
             //move timer
             let blockTicks = blockTicks + 1;
         }
