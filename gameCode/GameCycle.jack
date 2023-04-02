@@ -16,6 +16,7 @@ class GameCycle{
     field LCGenerator random;
     field Array blockArr;
     field Player player;
+    field PlayerMovement playerMove;
 
     constructor GameCycle new(){
         var int i, j;
@@ -31,6 +32,8 @@ class GameCycle{
         let newBlockPeriod = 70;
         let newBlockTicks = 0;
         let blockArr = Array.new(screenHeigth);
+        let player = Player.new(0, 0, 51, 30, 60, 3);
+        let playerMove = PlayerMovement.new(player, blockArr, (254/6), (510/10));
         let i = 0;
         while (i < screenHeigth){
             let bufferArr = Array.new(screenWidth);
@@ -42,7 +45,7 @@ class GameCycle{
             }
             let i = i + 1;
         }
-        let player = Player.new(0, 0);
+        
         let random = LCGenerator.new(7394);
         let unrandom = UnrandomizerSimple.new(1, random, screenWidth, screenHeigth);
         return this;
@@ -123,14 +126,7 @@ class GameCycle{
                 }
             }
             //try move player
-            /*
-            //probe keyboard
-            let key = Keyboard.keyPressed();
-            if (key = 65){
-                let playerCoords = player.tryLeft();
-                //check coordinates somehow
-                //and move if checked
-            }*/
+            do playerMove.execute();
 
             //move timers
             let blockMovementTicks = blockMovementTicks + 1;
