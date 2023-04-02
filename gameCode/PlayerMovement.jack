@@ -21,7 +21,7 @@ class PlayerMovement{
         let playerSpeed = plr.getPlayerSpeed();
         let maxJumpHeight = plr.getPlayerMaxJump();
         let curJumpHeight = 0;
-        let isOnGround = true;
+        let isOnGround = false;
         return this;
     }
 
@@ -29,13 +29,13 @@ class PlayerMovement{
         var char key;
         do player.erase();
         let key = Keyboard.keyPressed();
-        if (key = 130){
+        if (key = 132){
             let playerCoordinates = player.tryRight();
             if (moveCheck()){
                 do player.moveRight();
             }
         }
-        if (key = 132){
+        if (key = 130){
             let playerCoordinates = player.tryLeft();
             if (moveCheck()){
                 do player.moveLeft();
