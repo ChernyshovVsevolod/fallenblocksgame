@@ -48,7 +48,7 @@ class PlayerMovement{
                 let isOnGround = false;
             }
         }
-        if (~isOnGround & (curJumpHeight = 0)){
+        if ((~isOnGround) & (curJumpHeight = 0)){
             let playerCoordinates = player.tryDown();
             if (moveCheck()){
                 do player.moveDown();
@@ -83,10 +83,10 @@ class PlayerMovement{
         if ((playerX > 511) | (playerX < 0) | (playerY > 255) | (playerY < 0)){
             return false;
         }
-        let row = playerCoordinates.getY() / blockHeight;
-        let col = playerCoordinates.getX() / blockWidth;
-        let tempArr = blockArr[col];
-        if (tempArr[row] = 0){
+        let row = playerY / blockHeight;
+        let col = playerX / blockWidth;
+        let tempArr = blockArr[row];
+        if (tempArr[col] = 0){
             return true;
         }
         return false;
