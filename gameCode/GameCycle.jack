@@ -18,6 +18,9 @@ class GameCycle{
     field Player player;
     field PlayerMovement playerMove;
 
+    field int blockWidth;
+    field int blockHeight;
+
     constructor GameCycle new(){
         var int i, j;
         var Array bufferArr;
@@ -25,17 +28,20 @@ class GameCycle{
         //let blockDelay = 0;
         let blockMovementPeriod = 20;
         let blockMovementTicks = 0;
-        let standartTickDelay = 3;
-        let screenWidth = 10;   //
-        let screenHeigth = 6;   //
+        let standartTickDelay = 9;
+        let blockWidth = 32; //51
+        let blockHeight = 32; //42
+        let screenWidth = 512 / blockWidth;
+        let screenHeigth = 256 / blockHeight;
         let gameIsNotFinished = true;
         let newBlockPeriod = 70;
         let newBlockTicks = 0;
+        
         let blockArr = Array.new(screenHeigth);
-        let player = Player.new(0, 0, 51, 30, 60, 3);
-        let playerMove = PlayerMovement.new(player, blockArr, (254/6), (510/10));
+        let player = Player.new(0, 0, 30, 20, 45, 3);
+        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth);
         let i = 0;
-        while (i < screenHeigth){
+        while (i < (screenHeigth)){
             let bufferArr = Array.new(screenWidth);
             let blockArr[i] = bufferArr;
             let j = 0;
@@ -117,7 +123,8 @@ class GameCycle{
                 let upRow = blockArr[0];
                 if (randomBlockPos > -1){
                     if (upRow[randomBlockPos] = 0){
-                        let blockBuffer = Block.new(51 * randomBlockPos, 0);
+                        let blockBuffer = Block.new(blockWidth * randomBlockPos, 0);
+                        do blockBuffer.setParameters(blockWidth, blockHeight);
                         let upRow[randomBlockPos] = blockBuffer;
                         do blockBuffer.draw();
                         do unrandom.correctForNewBlock(randomBlockPos);
