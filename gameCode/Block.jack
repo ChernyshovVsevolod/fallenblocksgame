@@ -2,6 +2,11 @@ class Block {
     field int x, y, width, height;
     field int blocktype;
 
+    method void setParameters(int sx, int sy) {
+        let width = sx;
+        let height = sy;
+    }
+
     constructor Block new(int rx, int ry) {
         let x = rx;
         let y = ry;
