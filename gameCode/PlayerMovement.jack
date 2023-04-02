@@ -2,7 +2,9 @@ class PlayerMovement{
     field Player player;
     field Array blockArr;
     field int blockHeight;
+    field int maxBlockHeight;
     field int blockWidth;
+    field int maxBlockWidth;
     field int playerHeight;
     field int playerWidth;
     field int playerSpeed;
@@ -16,6 +18,8 @@ class PlayerMovement{
         let blockArr = blocks;
         let blockHeight = bHeight;
         let blockWidth = bWidth;
+        let maxBlockHeight = 255 / bHeight * bHeight;
+        let maxBlockWidth = 512 / bWidth * bWidth;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
         let playerSpeed = plr.getPlayerSpeed();
@@ -82,7 +86,7 @@ class PlayerMovement{
         var Array tempArr;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        if ((playerX > 511) | (playerX < 0) | (playerY > 255) | (playerY < 0)){
+        if ((playerX > maxBlockWidth) | (playerX < 0) | (playerY > maxBlockHeight) | (playerY < 0)){
             return false;
         }
         let row = playerY / blockHeight;
