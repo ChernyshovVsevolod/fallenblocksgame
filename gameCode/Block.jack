@@ -1,6 +1,6 @@
 class Block {
-    field int x, y;
-    field char blocktype;
+    field int x, y, width, height;
+    field int blocktype;
 
     constructor Block new(int rx, int ry) {
         let x = rx;
@@ -15,19 +15,24 @@ class Block {
     }
 
     method void draw() {
+        let width = 512/10;
+        let height = 256/6;
         do Screen.setColor(true);
-        do Screen.drawRectangle(x, y, x + (512/15), y + (256/8));
+        do Screen.drawRectangle(x, y, x + width, y + height);
         return;
     }
 
     method void erase() {
+        let width = 512/10;
+        let height = 256/6;
         do Screen.setColor(false);
-        do Screen.drawRectangle(x, y, x + (512/15) , y + (256/8));
+        do Screen.drawRectangle(x, y, x + width , y + height);
         return;
     }
 
     method void moveDown() {
-        let y = y + (256/8);
+        let height = 256/6;
+        let y = y + height;
         return;
     }
 }
