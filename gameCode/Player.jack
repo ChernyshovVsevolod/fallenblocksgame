@@ -1,86 +1,103 @@
 class Player{
     field Point coordinates;
-    field int PlayerX;
+    field int playerX;
     field int playerY;
-    field int jumpHeight;
+    field int height;
+    field int width;
+    field int maxJumpHeight;
     field int speed;
 
-    constructor Player new(int x, int y){
-        let coordinates = Point.new(x, y);
-        let PlayerX = x;
-        let playerY = y;
-        let jumpHeight = 4;
-        let speed = 1;
+    constructor Player new(int pX, int pY, int pHeight, int pWidth, int maxJump, int pSpeed){
+        let coordinates = Point.new(pX, pY);
+        let playerX = pX;
+        let playerY = pY;
+        let height = pHeight;
+        let width = pWidth;
+        let maxJumpHeight = maxJump;
+        let speed = pSpeed;
         return this;
     }
 
     method Point getCoordinates(){
-        do coordinates.setX(PlayerX);
+        do coordinates.setX(playerX);
         do coordinates.setY(playerY);
         return coordinates;
     }
 
+    method int getPlayerHeight(){
+        return height;
+    }
+
+    method int getPlayerWidth(){
+        return width;
+    }
+
+    method int getPlayerSpeed(){
+        return speed;
+    }
+
+    method int getPlayerMaxJump(){
+        return maxJumpHeight;
+    }
+
     method void draw(){
         do Screen.setColor(true);
-        do Screen.drawRectangle(PlayerX, playerY, PlayerX + 3, playerY + 3);
+        do Screen.drawRectangle(playerX, playerY, playerX + width, playerY + height);
         return;
     }
 
     method void erase(){
         do Screen.setColor(false);
-        do Screen.drawRectangle(PlayerX, playerY, PlayerX + 3, playerY + 3);
+        do Screen.drawRectangle(playerX, playerY, playerX + width, playerY + height);
         return;
     }
 
     method Point tryRight(){
-        do coordinates.setX(PlayerX + speed);
-        do coordinates.setY(playerY);
+        do coordinates.setX(playerX + width + speed);
+        do coordinates.setY(playerY + height);
         return coordinates;
     }
 
     method Point tryLeft(){
-        do coordinates.setX(PlayerX - speed);
-        do coordinates.setY(playerY);
+        do coordinates.setX(playerX - speed);
+        do coordinates.setY(playerY + height);
         return coordinates;
     }
 
     method Point tryUp(){
-        do coordinates.setX(PlayerX);
+        do coordinates.setX(playerX);
         do coordinates.setY(playerY - speed);
         return coordinates;
     }
 
     method Point tryDown(){
-        do coordinates.setX(PlayerX);
-        do coordinates.setY(playerY + speed);
+        do coordinates.setX(playerX);
+        do coordinates.setY(playerY + height + speed);
         return coordinates;
     }
 
     method void moveRight(){
-        let PlayerX = PlayerX + speed;
-        do draw();
+        let playerX = playerX + speed;
         return;
     }
 
     method void moveLeft(){
-        let PlayerX = PlayerX - speed;
-        do draw();
+        let playerX = playerX - speed;
         return;
     }
 
     method void moveUp(){
         let playerY = playerY - speed;
-        do draw();
         return;
     }
 
     method void moveDown(){
         let playerY = playerY + speed;
-        do draw();
         return;
     }
 
     method void dispose(){
+        do coordinates.dispose();
         do Memory.deAlloc(this);
         return;
     }
