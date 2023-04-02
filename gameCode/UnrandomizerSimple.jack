@@ -1,0 +1,86 @@
+//computes positions for new blocks slightly shifting probabilities
+class UnrandomizerSimple{
+    field LCGenerator random;
+    field int unrandomFactor;
+    field int totalSum;
+    field int screenWidth;
+    field Array probabilityArr;
+    field int bitmask;
+
+    constructor UnrandomizerSimple new(int factor, int newRandom, int scrWidth, int scrHeigth){
+        var int i;
+        let random = newRandom;
+        //let unrandomFactor = factor;
+        let screenWidth = scrWidth;
+        //let totalSum = screenWidth;
+        //let bitmask = -512;
+        let probabilityArr = Array.new(screenWidth);
+        let i = 0;
+        while (i < screenWidth){
+            let probabilityArr[i] = 1;
+            let i = i + 1;
+        }
+        return this;
+    }
+
+    method LCGenerator getLCG(){
+        return random;
+    }
+
+    method void setLCG(LCGenerator newRandom){
+        do random.dispose();
+        let random = newRandom;
+        return;
+    }
+
+    /**
+    method int getFactor(){
+        return unrandomFactor;
+    }
+
+    method void setFactor(int factor){
+        let unrandomFactor = factor;
+        return;
+    }
+    */
+
+    method void correctForDeletedRow(){
+        var int i;
+        let i = 0;
+        while (i < screenWidth){
+            let probabilityArr[i] = probabilityArr[i] - 1;
+            let i = i + 1;
+        }
+        //let totalSum = totalSum + (screenWidth * unrandomFactor);
+        return;
+    }
+
+    method int computeNextPos(){
+        var int randomBlockPos;
+        var int i;
+        var int improbability;
+        var int impossibleNum;
+        let randomBlockPos = (random.nextInt() & 16383) / 128;
+        let randomBlockPos = randomBlockPos - (screenWidth * (randomBlockPos / screenWidth));
+        let improbability = ((random.nextInt() & 16383) / 128);
+        let impossibleNum = probabilityArr[randomBlockPos];
+        let improbability = improbability - (impossibleNum * (improbability / impossibleNum));
+        if (~(improbability = 0)){
+            let randomBlockPos = -1;
+        }
+        return randomBlockPos;
+    }
+
+    method void correctForNewBlock(int index){
+        //let totalSum = totalSum - unrandomFactor;
+        let probabilityArr[index] = probabilityArr[index] + 1;
+        return;
+    }
+
+    method void dispose(){
+        do random.dispose();
+        do probabilityArr.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}
