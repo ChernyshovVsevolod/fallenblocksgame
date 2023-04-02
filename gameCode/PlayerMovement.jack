@@ -18,7 +18,7 @@ class PlayerMovement{
         let blockArr = blocks;
         let blockHeight = bHeight;
         let blockWidth = bWidth;
-        let maxBlockHeight = 255 / bHeight * bHeight;
+        let maxBlockHeight = 256 / bHeight * bHeight;
         let maxBlockWidth = 512 / bWidth * bWidth;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
