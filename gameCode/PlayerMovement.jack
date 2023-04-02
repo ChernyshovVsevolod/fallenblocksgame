@@ -27,7 +27,8 @@ class PlayerMovement{
 
     method void execute(){
         var char key;
-        let key = keyboard.keyPressed();
+        do player.erase();
+        let key = Keyboard.keyPressed();
         if (key = 130){
             let playerCoordinates = player.tryRight();
             if (moveCheck()){
@@ -72,6 +73,7 @@ class PlayerMovement{
                 }
             }
         }
+        do player.draw();
         return;
     }
 
