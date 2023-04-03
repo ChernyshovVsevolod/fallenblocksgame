@@ -2,9 +2,9 @@ class PlayerMovement{
     field Player player;
     field Array blockArr;
     field int blockHeight;
-    field int maxBlockHeight;
+    field int screenHeight;
     field int blockWidth;
-    field int maxBlockWidth;
+    field int screenWidth;
     field int playerHeight;
     field int playerWidth;
     field int maxJumpHeight;
@@ -18,8 +18,8 @@ class PlayerMovement{
         let blockArr = blocks;
         let blockHeight = bHeight;
         let blockWidth = bWidth;
-        let maxBlockHeight = 256 / bHeight * bHeight - 1;
-        let maxBlockWidth = 512 / bWidth * bWidth - 1;
+        let screenHeight = 256 / bHeight * bHeight - 1;
+        let screenWidth = 512 / bWidth * bWidth - 1;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
         let jumpSpeed = plr.getJumpSpeed();
@@ -40,9 +40,11 @@ class PlayerMovement{
             let playerCoordinates = player.tryRight();
             if (CheckOutOfBound()){
                 if (CheckRightMove()){
-                    do player.erase();
+                    if (~wasMove){
+                        do player.erase();
+                        let wasMove = true;
+                    }
                     do player.moveRight();
-                    let wasMove = true;
                 }
             }
         }
@@ -50,9 +52,11 @@ class PlayerMovement{
             let playerCoordinates = player.tryLeft();
             if (CheckOutOfBound()){
                 if (CheckLeftMove()){
-                    do player.erase();
+                    if (~wasMove){
+                        do player.erase();
+                        let wasMove = true;
+                    }
                     do player.moveLeft();
-                    let wasMove = true;
                 }
             }
         }
@@ -60,11 +64,13 @@ class PlayerMovement{
             let playerCoordinates = player.tryUp();
             if (CheckOutOfBound()){
                 if (CheckUpMove()){
-                    do player.erase();
+                    if (~wasMove){
+                        do player.erase();
+                        let wasMove = true;
+                    }
                     do player.moveUp();
                     let curJumpHeight = curJumpHeight + jumpSpeed;
                     let isOnGround = false;
-                    let wasMove = true;
                 }
             }
         }
@@ -78,9 +84,11 @@ class PlayerMovement{
                     let playerCoordinates = player.tryUp();
                     if (CheckOutOfBound()){
                         if (CheckUpMove()){
-                            do player.erase();
+                            if (~wasMove){
+                                do player.erase();
+                                let wasMove = true;
+                            }
                             do player.moveUp();
-                            let wasMove = true;
                         }
                     }
                     else{
@@ -94,9 +102,11 @@ class PlayerMovement{
             let playerCoordinates = player.tryDown();
             if (CheckOutOfBound()){
                 if (CheckDownMove()){
-                    do player.erase();
+                    if (~wasMove){
+                        do player.erase();
+                        let wasMove = true;
+                    }
                     do player.moveDown();
-                    let wasMove = true;
                 }
                 else{
                     let isOnGround = true;
@@ -116,7 +126,7 @@ class PlayerMovement{
         var int playerX, playerY;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth > maxBlockWidth) | (playerY + playerHeight > maxBlockHeight)){
+        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth > screenWidth) | (playerY + playerHeight > screenHeight)){
             return false;
         }
         return true;
