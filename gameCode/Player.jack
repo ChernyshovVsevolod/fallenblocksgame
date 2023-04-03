@@ -5,16 +5,20 @@ class Player{
     field int height;
     field int width;
     field int maxJumpHeight;
-    field int speed;
+    field int moveSpeed;
+    field int jumpSpeed;
+    field int fallSpeed;
 
-    constructor Player new(int pX, int pY, int pHeight, int pWidth, int maxJump, int pSpeed){
+    constructor Player new(int pX, int pY, int pHeight, int pWidth, int maxJump, int mSpeed, int jSpeed, int fSpeed){
         let coordinates = Point.new(pX, pY);
         let playerX = pX;
         let playerY = pY;
         let height = pHeight;
         let width = pWidth;
         let maxJumpHeight = maxJump;
-        let speed = pSpeed;
+        let moveSpeed = mSpeed;
+        let jumpSpeed = jSpeed;
+        let fallSpeed = fSpeed;
         return this;
     }
 
@@ -32,8 +36,8 @@ class Player{
         return width;
     }
 
-    method int getPlayerSpeed(){
-        return speed;
+    method int getJumpSpeed(){
+        return jumpSpeed;
     }
 
     method int getPlayerMaxJump(){
@@ -53,46 +57,46 @@ class Player{
     }
 
     method Point tryRight(){
-        do coordinates.setX(playerX + width + speed);
-        do coordinates.setY(playerY + height);
+        do coordinates.setX(playerX + moveSpeed);
+        do coordinates.setY(playerY);
         return coordinates;
     }
 
     method Point tryLeft(){
-        do coordinates.setX(playerX - speed);
-        do coordinates.setY(playerY + height);
+        do coordinates.setX(playerX - moveSpeed);
+        do coordinates.setY(playerY);
         return coordinates;
     }
 
     method Point tryUp(){
         do coordinates.setX(playerX);
-        do coordinates.setY(playerY - speed);
+        do coordinates.setY(playerY - jumpSpeed);
         return coordinates;
     }
 
     method Point tryDown(){
         do coordinates.setX(playerX);
-        do coordinates.setY(playerY + height + speed);
+        do coordinates.setY(playerY + fallSpeed);
         return coordinates;
     }
 
     method void moveRight(){
-        let playerX = playerX + speed;
+        let playerX = playerX + moveSpeed;
         return;
     }
 
     method void moveLeft(){
-        let playerX = playerX - speed;
+        let playerX = playerX - moveSpeed;
         return;
     }
 
     method void moveUp(){
-        let playerY = playerY - speed;
+        let playerY = playerY - jumpSpeed;
         return;
     }
 
     method void moveDown(){
-        let playerY = playerY + speed;
+        let playerY = playerY + fallSpeed;
         return;
     }
 
