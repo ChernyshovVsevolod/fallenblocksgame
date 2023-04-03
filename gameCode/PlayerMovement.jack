@@ -7,13 +7,13 @@ class PlayerMovement{
     field int maxBlockWidth;
     field int playerHeight;
     field int playerWidth;
-    field int playerSpeed;
     field int maxJumpHeight;
     field int curJumpHeight;
+    field int jumpSpeed;
     field bool isOnGround;
     field Point playerCoordinates;
 
-    constructor PlayerMovement new(Player plr, Array blocks, int bHeight, int bWidth){
+    constructor PlayerMovement new(Player plr, Array blocks, int bHeight, int bWidth, int maxJump){
         let player = plr;
         let blockArr = blocks;
         let blockHeight = bHeight;
@@ -22,8 +22,8 @@ class PlayerMovement{
         let maxBlockWidth = 512 / bWidth * bWidth - 1;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
-        let playerSpeed = plr.getPlayerSpeed();
-        let maxJumpHeight = plr.getPlayerMaxJump();
+        let jumpSpeed = plr.getJumpSpeed();
+        let maxJumpHeight = maxJump;
         let curJumpHeight = 0;
         let isOnGround = false;
         return this;
@@ -38,75 +38,165 @@ class PlayerMovement{
         
         if (key = 132){
             let playerCoordinates = player.tryRight();
-            if (moveCheck()){
-                do player.moveRight();
-                let wasMove = true;
+            if (CheckOutOfBound()){
+                if (CheckRightMove()){
+                    do player.erase();
+                    do player.moveRight();
+                    let wasMove = true;
+                }
             }
         }
         if (key = 130){
             let playerCoordinates = player.tryLeft();
-            if (moveCheck()){
-                do player.moveLeft();
-                let wasMove = true;
+            if (CheckOutOfBound()){
+                if (CheckLeftMove()){
+                    do player.erase();
+                    do player.moveLeft();
+                    let wasMove = true;
+                }
             }
         }
         if (isOnGround & (key = 32)){
             let playerCoordinates = player.tryUp();
-            if (moveCheck()){
-                do player.moveUp();
-                let curJumpHeight = curJumpHeight + playerSpeed;
-                let isOnGround = false;
-                let wasMove = true;
+            if (CheckOutOfBound()){
+                if (CheckUpMove()){
+                    do player.erase();
+                    do player.moveUp();
+                    let curJumpHeight = curJumpHeight + jumpSpeed;
+                    let isOnGround = false;
+                    let wasMove = true;
+                }
             }
         }
-        if ((~isOnGround) & (curJumpHeight = 0)){
+        else{
+            if (curJumpHeight > 0){
+                let curJumpHeight = curJumpHeight + jumpSpeed;
+                if (curJumpHeight > maxJumpHeight){
+                    let curJumpHeight = 0;
+                }
+                else{
+                    let playerCoordinates = player.tryUp();
+                    if (CheckOutOfBound()){
+                        if (CheckUpMove()){
+                            do player.erase();
+                            do player.moveUp();
+                            let wasMove = true;
+                        }
+                    }
+                    else{
+                        let curJumpHeight = 0;
+                    }
+                }
+            }
+        }
+
+        if (curJumpHeight = 0){
             let playerCoordinates = player.tryDown();
-            if (moveCheck()){
-                do player.moveDown();
-                let wasMove = true;
+            if (CheckOutOfBound()){
+                if (CheckDownMove()){
+                    do player.erase();
+                    do player.moveDown();
+                    let wasMove = true;
+                }
             }
             else{
                 let isOnGround = true;
             }
         }
-        if (curJumpHeight > 0){
-            let curJumpHeight = curJumpHeight + playerSpeed;
-            if (curJumpHeight > maxJumpHeight){
-                let curJumpHeight = 0;
-            }
-            else{
-                let playerCoordinates = player.tryUp();
-                if (moveCheck()){
-                    do player.moveUp();
-                    let wasMove = true;
-                }
-                else{
-                    let curJumpHeight = 0;
-                }
-            }
-        }
         if (wasMove){
-            do player.erase();
             do player.draw();
         }
         return;
     }
 
-    method bool moveCheck(){
-        var int playerX, playerY ,row, col;
+    method bool CheckOutOfBound(){
+        var int playerX, playerY;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth < maxBlockWidth) | (playerY + playerHeight < maxBlockHeight)){
+            return false;
+        }
+        return true;
+    }
+
+    method bool CheckRightMove(){
+        var int playerX, playerY, row, col;
         var Array tempArr;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        if ((playerX > maxBlockWidth) | (playerX < 0) | (playerY > maxBlockHeight) | (playerY < 0)){
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX + playerWidth / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        let row = playerY / blockHeight;
+        let col = playerX + playerWidth / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        return true;
+    }
+
+    method bool CheckLeftMove(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
             return false;
         }
         let row = playerY / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
-        if (tempArr[col] = 0){
-            return true;
+        if (~(tempArr[col] = 0)){
+            return false;
         }
-        return false;
+        return true;
+    }
+
+    method bool CheckUpMove(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY / blockHeight;
+        let col = playerX / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        let row = playerY / blockHeight;
+        let col = playerX + playerWidth / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        return true;
+    }
+
+    method bool CheckDownMove(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX + playerWidth / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX / blockWidth;
+        let tempArr = blockArr[row];
+        if (~(tempArr[col] = 0)){
+            return false;
+        }
+        return true;
     }
 
     method Point getPlayerArrCoordinates(){
