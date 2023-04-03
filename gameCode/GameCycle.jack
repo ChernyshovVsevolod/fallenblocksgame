@@ -17,6 +17,7 @@ class GameCycle{
     field Array blockArr;
     field Player player;
     field PlayerMovement playerMove;
+    field Point playerCoordinatesInArr;
 
     field int blockWidth;
     field int blockHeight;
@@ -64,6 +65,7 @@ class GameCycle{
         var bool isRowComplete;
         var int randomBlockPos;
         var char key;
+        var int iterator;
         var Point playerCoords;
         while (gameIsNotFinished){
             //try move blocks
@@ -135,12 +137,28 @@ class GameCycle{
             //try move player
             do playerMove.execute();
 
+            //check for player-block collision
+            let playerCoordinatesInArr = playerMove.getPlayerArrCoordinates();
+            let upRow = blockArr[playerCoordinatesInArr.getY()];
+            if (~(upRow[playerCoordinatesInArr.getX()] = 0)){
+                let gameIsNotFinished = false;
+            }
+
             //move timers
             let blockMovementTicks = blockMovementTicks + 1;
             let newBlockTicks = newBlockTicks + 1;
             //controle the time flow
             do Sys.wait(standartTickDelay);
         }
+
+        //player is dead here or game is stopped
+        //anyway
+        let iterator = 0;
+        while (iterator < 100){
+            do Output.printString("you are dead :(  ");
+            let iterator = iterator + 1;
+        }
+
         //dispose something? nope
         return;
     }
@@ -154,6 +172,10 @@ class GameCycle{
             do a.dispose();
         }
         do blockArr.dispose();
+        do player.dispose();
+        do unrandom.dispose();
+        do random.dispose();
+        do playerMove.dispose();
         do Memory.deAlloc(this);
         return;
     }
