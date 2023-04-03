@@ -128,8 +128,7 @@ class GameCycle{
                 let upRow = blockArr[0];
                 if (randomBlockPos > -1){
                     if (upRow[randomBlockPos] = 0){
-                        let blockBuffer = Block.new(blockWidth * randomBlockPos, 0);
-                        do blockBuffer.setParameters(blockWidth, blockHeight);
+                        let blockBuffer = Block.new(blockWidth * randomBlockPos, 0, blockHeight, blockWidth, 0);
                         let upRow[randomBlockPos] = blockBuffer;
                         do blockBuffer.draw();
                         do unrandom.correctForNewBlock(randomBlockPos);
