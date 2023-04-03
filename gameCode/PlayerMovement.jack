@@ -98,6 +98,9 @@ class PlayerMovement{
                     do player.moveDown();
                     let wasMove = true;
                 }
+                else{
+                    let isOnGround = true;
+                }
             }
             else{
                 let isOnGround = true;
@@ -113,7 +116,7 @@ class PlayerMovement{
         var int playerX, playerY;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth < maxBlockWidth) | (playerY + playerHeight < maxBlockHeight)){
+        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth > maxBlockWidth) | (playerY + playerHeight > maxBlockHeight)){
             return false;
         }
         return true;

@@ -24,6 +24,7 @@ class GameCycle{
 
     constructor GameCycle new(){
         var int i, j;
+        var int maxPlayerJumpHeight;
         var Array bufferArr;
         //let bitmask = 15872; //0001111100000???
         //let blockDelay = 0;
@@ -39,8 +40,10 @@ class GameCycle{
         let newBlockTicks = 0;
         
         let blockArr = Array.new(screenHeigth);
-        let player = Player.new(0, 0, 30, 20, 45, 3);
-        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth);
+
+        let maxPlayerJumpHeight = 145;
+        let player = Player.new(0, 0, 30, 20, maxPlayerJumpHeight, 3, 3, 2);
+        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, maxPlayerJumpHeight);
         let i = 0;
         while (i < (screenHeigth)){
             let bufferArr = Array.new(screenWidth);
