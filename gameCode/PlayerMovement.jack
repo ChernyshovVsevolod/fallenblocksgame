@@ -18,8 +18,8 @@ class PlayerMovement{
         let blockArr = blocks;
         let blockHeight = bHeight;
         let blockWidth = bWidth;
-        let maxBlockHeight = 256 / bHeight * bHeight;
-        let maxBlockWidth = 512 / bWidth * bWidth;
+        let maxBlockHeight = 256 / bHeight * bHeight - 1;
+        let maxBlockWidth = 512 / bWidth * bWidth - 1;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
         let playerSpeed = plr.getPlayerSpeed();
@@ -31,18 +31,23 @@ class PlayerMovement{
 
     method void execute(){
         var char key;
-        do player.erase();
+        var bool wasMove;
+
+        let wasMove = false;
         let key = Keyboard.keyPressed();
+        
         if (key = 132){
             let playerCoordinates = player.tryRight();
             if (moveCheck()){
                 do player.moveRight();
+                let wasMove = true;
             }
         }
         if (key = 130){
             let playerCoordinates = player.tryLeft();
             if (moveCheck()){
                 do player.moveLeft();
+                let wasMove = true;
             }
         }
         if (isOnGround & (key = 32)){
@@ -51,12 +56,14 @@ class PlayerMovement{
                 do player.moveUp();
                 let curJumpHeight = curJumpHeight + playerSpeed;
                 let isOnGround = false;
+                let wasMove = true;
             }
         }
         if ((~isOnGround) & (curJumpHeight = 0)){
             let playerCoordinates = player.tryDown();
             if (moveCheck()){
                 do player.moveDown();
+                let wasMove = true;
             }
             else{
                 let isOnGround = true;
@@ -71,13 +78,17 @@ class PlayerMovement{
                 let playerCoordinates = player.tryUp();
                 if (moveCheck()){
                     do player.moveUp();
+                    let wasMove = true;
                 }
                 else{
                     let curJumpHeight = 0;
                 }
             }
         }
-        do player.draw();
+        if (wasMove){
+            do player.erase();
+            do player.draw();
+        }
         return;
     }
 
@@ -98,10 +109,10 @@ class PlayerMovement{
         return false;
     }
 
-    method Point getPlayerCoordinates(){
+    method Point getPlayerArrCoordinates(){
         let playerCoordinates = player.getCoordinates();
-        do playerCoordinates.setX(playerCoordinates.getX() + (playerWidth / 2));
-        do playerCoordinates.setY(playerCoordinates.getY() + (playerHeight / 2));
+        do playerCoordinates.setX((playerCoordinates.getX() + (playerWidth / 2)) / blockWidth);
+        do playerCoordinates.setY((playerCoordinates.getY() + (playerHeight / 2)) / blockHeight);
         return playerCoordinates;
     }
 
