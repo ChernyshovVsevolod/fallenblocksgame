@@ -5,6 +5,7 @@ class Block {
     method void setParameters(int sx, int sy) {
         let width = sx;
         let height = sy;
+        return;
     }
 
     constructor Block new(int rx, int ry) {
