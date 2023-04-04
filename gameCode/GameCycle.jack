@@ -5,6 +5,14 @@ class GameCycle{
     //field int blockDelay;
     field int newBlockPeriod;
     field int newBlockTicks;
+    field int keyboardCheckPeriod;
+    field int keyboardCheckTicks;
+    field int keyboardCheckSuccessCount;
+    //how unoften we take truly random things from outside to make game more random
+    field int randomizingRarity; //in number of successful keyboardCheckPeriods
+    field int randKey;
+
+    field int timeTicks;
 
     field int standartTickDelay;
     field int screenWidth;
@@ -39,6 +47,12 @@ class GameCycle{
         let gameIsNotFinished = true;
         let newBlockPeriod = 70;
         let newBlockTicks = 0;
+
+        let keyboardCheckPeriod = 100;
+        let keyboardCheckTicks = 0;
+        let keyboardCheckSuccessCount = 0;
+        let randomizingRarity = 30;
+        let timeTicks = 0;
         
         let blockArr = Array.new(screenHeigth);
 
@@ -57,7 +71,8 @@ class GameCycle{
             let i = i + 1;
         }
         
-        let random = LCGenerator.new(7394);
+        let randKey = 7394;
+        let random = LCGenerator.new(randKey);
         let unrandom = UnrandomizerSimple.new(1, random, screenWidth, screenHeigth);
         return this;
     }
@@ -68,7 +83,7 @@ class GameCycle{
         var Block blockBuffer;
         var bool isRowComplete;
         var int randomBlockPos;
-        var char key;
+        var int key; //yap it is int
         var int iterator;
         var Point playerCoords;
         while (gameIsNotFinished){
@@ -158,10 +173,28 @@ class GameCycle{
                 }
             }
             
+            //take randomness from the outside world
+            if (keyboardCheckTicks > keyboardCheckPeriod){
+                let key = Keyboard.keyPressed();
+                if (~(key = 0)){
+                    let keyboardCheckSuccessCount = keyboardCheckSuccessCount + 1;
+                    if (keyboardCheckSuccessCount > randomizingRarity){
+                        //old random is disposed in unrandom
+                        let randKey = (timeTicks + key) & 32767;
+                        let random = LCGenerator.new(randKey);
+                        do unrandom.setLCG(random);
+                        let keyboardCheckSuccessCount = 0;
+                    }
+                }
+                let keyboardCheckTicks = 0;
+            }
 
             //move timers
             let blockMovementTicks = blockMovementTicks + 1;
             let newBlockTicks = newBlockTicks + 1;
+            let keyboardCheckTicks = keyboardCheckTicks + 1;
+            let timeTicks = timeTicks + 1;
+            
             //controle the time flow
             do Sys.wait(standartTickDelay);
         }
@@ -182,6 +215,8 @@ class GameCycle{
         do Output.moveCursor(0, 0);
         do Output.printString("score: ");
         do Output.printInt(score);
+        do Output.printString(" randKey: ");
+        do Output.printInt(randKey);
         return;
     }
 
