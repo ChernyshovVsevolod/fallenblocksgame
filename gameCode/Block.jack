@@ -1,17 +1,13 @@
 class Block {
     field int x, y, width, height;
-    field int blocktype;
+    field int blockType;
 
-    method void setParameters(int sx, int sy) {
-        let width = sx;
-        let height = sy;
-        return;
-    }
-
-    constructor Block new(int rx, int ry) {
+    constructor Block new(int rx, int ry, int blockHeight, int blockWidth, int bType) {
         let x = rx;
         let y = ry;
-        //do draw();
+        let width = blockWidth;
+        let height = blockHeight;
+        let blockType = bType;
         return this;
     }
 
@@ -35,5 +31,9 @@ class Block {
     method void moveDown() {
         let y = y + height;
         return;
+    }
+
+    method int getType(){
+        return blockType;
     }
 }
