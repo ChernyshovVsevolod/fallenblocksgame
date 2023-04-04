@@ -46,7 +46,15 @@ class Player{
 
     method void draw(){
         do Screen.setColor(true);
-        do Screen.drawRectangle(playerX, playerY, playerX + width, playerY + height);
+        do Screen.drawRectangle(playerX, playerY + 7, playerX + width, playerY + 21);
+        do Screen.drawRectangle(playerX + 4, playerY, playerX + 16, playerY + 6);
+        do Screen.drawRectangle(playerX + 5, playerY + 22, playerX + 6, playerY + height);
+        do Screen.drawRectangle(playerX + 13, playerY + 22, playerX + 14, playerY + height);
+        do Screen.drawRectangle(playerX, playerY + 22, playerX + 1, playerY + 23);
+        do Screen.drawRectangle(playerX + 28, playerY + 22, playerX + 29, playerY + 23);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(playerX + 7, playerY + 2, playerX + 8, playerY + 3);
+        do Screen.drawRectangle(playerX + 11, playerY + 2, playerX + 12, playerY + 3);
         return;
     }
 
