@@ -17,8 +17,7 @@ class Block {
     }
 
     method void draw() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(x, y, x + width-1, y + height-1);
+        do drawTypeClassic();
         return;
     }
 
@@ -35,5 +34,118 @@ class Block {
 
     method int getType(){
         return blockType;
+    }
+
+    method void drawTypeClassic(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width-1, y + height-1);
+        return;
+    }
+
+    method void drawType1(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 4, y + 4, x + width - 5, y + height - 5);
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 8, y + 8, x + width - 9, y + height - 9);
+        return;
+    }
+
+    method void drawType2(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawCircle(x + 16, y + 16, 8);
+        return;
+    }
+
+    method void drawType3(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 4, y + 4, x + width - 5, y + height - 5);
+        do Screen.setColor(true);
+        do Screen.drawCircle(x + 16, y + 16, 8);
+        return;
+    }
+
+    method void drawType4(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 4, y + 4, x + width - 5, y + height - 5);
+        do Screen.setColor(true);
+        do Screen.drawLine(x + 4, y + 4, x + width - 5, y + height - 5);
+        do Screen.drawLine(x + 4, y + height - 5, x + width - 5, y + 4);
+        return;
+    }
+
+    method void drawType5(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 2, y + 2, x + width - 3, y + height - 3);
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 8, y + 20, x + width - 8, y + 22);
+        do Screen.drawCircle(x + 10, y + 12, 3);
+        do Screen.drawCircle(x + width - 10, y + 12, 3);
+        return;
+    }
+
+    method void drawType6(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 2, y + 2, x + width - 3, y + height - 3);
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 8, y + 20, x + width - 8, y + 22);
+        do Screen.drawCircle(x + 10, y + 12, 3);
+        do Screen.drawCircle(x + width - 10, y + 12, 3);
+        do Screen.drawRectangle(x + 7, y + 4, x + 12, y + 6);
+        do Screen.drawRectangle(x + width - 13, y + 4, x + width - 7, y + 6);
+        return;
+    }
+
+    method void drawType7(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 2, y + 2, x + width - 3, y + height - 3);
+        do Screen.setColor(true);
+        do Screen.drawCircle(x + 10, y + 12, 3);
+        do Screen.drawCircle(x + width - 10, y + 12, 3);
+        do Screen.drawRectangle(x + 7, y + 4, x + 12, y + 6);
+        do Screen.drawRectangle(x + width - 13, y + 4, x + width - 7, y + 6);
+        do Screen.drawRectangle(x + 8, y + 20, x + width - 8, y + 24);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 10, y + 21, x + width - 10, y + 23);
+        return;
+    }
+
+    method void drawBonusType1(){
+        do Screen.setColor(true);
+        do Screen.drawCircle(x + 16, y + 16, 8);
+        do Screen.setColor(false);
+        do Screen.drawCircle(x + 16, y + 16, 4);
+        return;
+    }
+
+    method void drawBonusType2(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 4, y + 7, x + width - 5, y + 8);
+
+        do Screen.drawLine(x + width - 5, y + 8, x + 6, y + height - 10);
+        do Screen.drawLine(x + width - 4, y + 8, x + 7, y + height - 10);
+
+        do Screen.drawLine(x + 4, y + 8, x + width - 7, y + height - 10);
+        do Screen.drawLine(x + 3, y + 8, x + width - 8, y + height - 10);
+
+        do Screen.drawLine(x + 6, y + height - 10, x + 15, y);
+        do Screen.drawLine(x + 5, y + height - 10, x + 14, y);
+
+        do Screen.drawLine(x + width - 7, y + height - 10, x + 15, y);
+        do Screen.drawLine(x + width - 6, y + height - 10, x + 16, y);
+        return;
     }
 }

@@ -4,18 +4,16 @@ class Player{
     field int playerY;
     field int height;
     field int width;
-    field int maxJumpHeight;
     field int moveSpeed;
     field int jumpSpeed;
     field int fallSpeed;
 
-    constructor Player new(int pX, int pY, int pHeight, int pWidth, int maxJump, int mSpeed, int jSpeed, int fSpeed){
+    constructor Player new(int pX, int pY, int pHeight, int pWidth, int mSpeed, int jSpeed, int fSpeed){
         let coordinates = Point.new(pX, pY);
         let playerX = pX;
         let playerY = pY;
         let height = pHeight;
         let width = pWidth;
-        let maxJumpHeight = maxJump;
         let moveSpeed = mSpeed;
         let jumpSpeed = jSpeed;
         let fallSpeed = fSpeed;
@@ -38,10 +36,6 @@ class Player{
 
     method int getJumpSpeed(){
         return jumpSpeed;
-    }
-
-    method int getPlayerMaxJump(){
-        return maxJumpHeight;
     }
 
     method void draw(){

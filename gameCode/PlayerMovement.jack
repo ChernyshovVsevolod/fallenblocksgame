@@ -2,9 +2,7 @@ class PlayerMovement{
     field Player player;
     field Array blockArr;
     field int blockHeight;
-    field int screenHeight;
     field int blockWidth;
-    field int screenWidth;
     field int playerHeight;
     field int playerWidth;
     field int maxJumpHeight;
@@ -18,8 +16,6 @@ class PlayerMovement{
         let blockArr = blocks;
         let blockHeight = bHeight;
         let blockWidth = bWidth;
-        let screenHeight = 256 / bHeight * bHeight - 1;
-        let screenWidth = 512 / bWidth * bWidth - 1;
         let playerHeight = plr.getPlayerHeight();
         let playerWidth = plr.getPlayerWidth();
         let jumpSpeed = plr.getJumpSpeed();
@@ -126,7 +122,7 @@ class PlayerMovement{
         var int playerX, playerY;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth > screenWidth) | (playerY + playerHeight > screenHeight)){
+        if ((playerX < 0) | (playerY < 0) | (playerX + playerWidth > 511) | (playerY + playerHeight > 255)){
             return false;
         }
         return true;
@@ -135,19 +131,26 @@ class PlayerMovement{
     method bool CheckRightMove(){
         var int playerX, playerY, row, col;
         var Array tempArr;
+        var Block block;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
         let row = playerY + playerHeight / blockHeight;
         let col = playerX + playerWidth / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         let row = playerY / blockHeight;
         let col = playerX + playerWidth / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         return true;
     }
@@ -155,19 +158,26 @@ class PlayerMovement{
     method bool CheckLeftMove(){
         var int playerX, playerY, row, col;
         var Array tempArr;
+        var Block block;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
         let row = playerY + playerHeight / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         let row = playerY / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         return true;
     }
@@ -175,19 +185,26 @@ class PlayerMovement{
     method bool CheckUpMove(){
         var int playerX, playerY, row, col;
         var Array tempArr;
+        var Block block;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
         let row = playerY / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         let row = playerY / blockHeight;
         let col = playerX + playerWidth / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         return true;
     }
@@ -195,19 +212,26 @@ class PlayerMovement{
     method bool CheckDownMove(){
         var int playerX, playerY, row, col;
         var Array tempArr;
+        var Block block;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
         let row = playerY + playerHeight / blockHeight;
         let col = playerX + playerWidth / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         let row = playerY + playerHeight / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
-            return false;
+            let block = tempArr[col];
+            if (block.getType() = 0){
+                return false;
+            }
         }
         return true;
     }

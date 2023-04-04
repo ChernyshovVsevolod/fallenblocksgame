@@ -42,7 +42,7 @@ class GameCycle{
         let blockArr = Array.new(screenHeigth);
 
         let maxPlayerJumpHeight = 145;
-        let player = Player.new(0, 0, 30, 20, maxPlayerJumpHeight, 3, 3, 2);
+        let player = Player.new(0, 0, 30, 20, 3, 3, 2);
         let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, maxPlayerJumpHeight);
         let i = 0;
         while (i < (screenHeigth)){
