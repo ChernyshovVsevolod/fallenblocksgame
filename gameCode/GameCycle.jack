@@ -9,6 +9,7 @@ class GameCycle{
     field int standartTickDelay;
     field int screenWidth;
     field int screenHeigth;
+    field int score;
     
     //field int bitmask;
     
@@ -118,8 +119,7 @@ class GameCycle{
                     let downRow = upRow;
                     let rowNum = rowNum - 1;
                 }
-                
-                
+                do showScore();
             }
             //add random block
             if (newBlockTicks > newBlockPeriod){
@@ -134,6 +134,8 @@ class GameCycle{
                         do unrandom.correctForNewBlock(randomBlockPos);
                     }
                     let newBlockTicks = 0;
+                    //output current score
+                do showScore();
                 }
             }
             //try move player
@@ -142,9 +144,20 @@ class GameCycle{
             //check for player-block collision
             let playerCoordinatesInArr = playerMove.getPlayerArrCoordinates();
             let upRow = blockArr[playerCoordinatesInArr.getY()];
-            if (~(upRow[playerCoordinatesInArr.getX()] = 0)){
-                let gameIsNotFinished = false;
+            let blockBuffer = upRow[playerCoordinatesInArr.getX()];
+            if (~(blockBuffer = 0)){
+                if (blockBuffer.getType() = 0){
+                    let gameIsNotFinished = false;
+                }else{
+                    do BlockBuffer.erase();
+                    do BlockBuffer.dispose();
+                    let upRow[playerCoordinatesInArr.getX()] = 0;
+                    do unrandom.correctForCollectedBlock(playerCoordinatesInArr.getX());
+                    let score = score + 1;
+                    do showScore();
+                }
             }
+            
 
             //move timers
             let blockMovementTicks = blockMovementTicks + 1;
@@ -165,6 +178,13 @@ class GameCycle{
         return;
     }
 
+    method void showScore(){
+        do Output.moveCursor(0, 0);
+        do Output.printString("score: ");
+        do Output.printInt(score);
+        return;
+    }
+
     method void dispose(){
         var int i;
         var Array a;
@@ -176,7 +196,7 @@ class GameCycle{
         do blockArr.dispose();
         do player.dispose();
         do unrandom.dispose();
-        do random.dispose();
+        //do random.dispose();  //disposed in unrandom
         do playerMove.dispose();
         do Memory.deAlloc(this);
         return;

@@ -1,4 +1,5 @@
 //computes positions for new blocks slightly shifting probabilities
+//this is an old version
 class Unrandomizer{
     field LCGenerator random;
     field int unrandomFactor;

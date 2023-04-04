@@ -33,17 +33,6 @@ class UnrandomizerSimple{
         return;
     }
 
-    /**
-    method int getFactor(){
-        return unrandomFactor;
-    }
-
-    method void setFactor(int factor){
-        let unrandomFactor = factor;
-        return;
-    }
-    */
-
     method void correctForDeletedRow(){
         var int i;
         let i = 0;
@@ -74,6 +63,11 @@ class UnrandomizerSimple{
     method void correctForNewBlock(int index){
         //let totalSum = totalSum - unrandomFactor;
         let probabilityArr[index] = probabilityArr[index] + 1;
+        return;
+    }
+
+    method void correctForCollectedBlock(int index){
+        let probabilityArr[index] = probabilityArr[index] - 1;
         return;
     }
 
