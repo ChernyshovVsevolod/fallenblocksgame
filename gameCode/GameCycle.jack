@@ -18,6 +18,13 @@ class GameCycle{
     field int screenWidth;
     field int screenHeigth;
     field int score;
+
+    field int bonusBlockRarity; // > 0, the higher the rarer
+
+    //output strings
+    field String scoreStr;
+    field String rKeyStr;
+    field String timeStr;
     
     //field int bitmask;
     
@@ -48,13 +55,19 @@ class GameCycle{
         let newBlockPeriod = 70;
         let newBlockTicks = 0;
 
-        let keyboardCheckPeriod = 100;
+        let bonusBlockRarity = 10;
+
+        let keyboardCheckPeriod = 50;
         let keyboardCheckTicks = 0;
         let keyboardCheckSuccessCount = 0;
-        let randomizingRarity = 30;
+        let randomizingRarity = 7;
         let timeTicks = 0;
         
         let blockArr = Array.new(screenHeigth);
+
+        let scoreStr = "score: ";
+        let rKeyStr = " randKey: ";
+        let timeStr = " time: ";
 
         let maxPlayerJumpHeight = 145;
         let player = Player.new(0, 0, 30, 20, 3, 3, 2);
@@ -85,6 +98,7 @@ class GameCycle{
         var int randomBlockPos;
         var int key; //yap it is int
         var int iterator;
+        var int blockTypeDecider;
         var Point playerCoords;
         while (gameIsNotFinished){
             //try move blocks
@@ -143,14 +157,24 @@ class GameCycle{
                 let upRow = blockArr[0];
                 if (randomBlockPos > -1){
                     if (upRow[randomBlockPos] = 0){
-                        let blockBuffer = Block.new(blockWidth * randomBlockPos, 0, blockHeight, blockWidth, 0);
+                        //deside on blocktype
+                        let blockTypeDecider = (random.nextInt() & 32767) / 512;
+                        let blockTypeDecider = blockTypeDecider 
+                                    - (bonusBlockRarity * (blockTypeDecider / bonusBlockRarity));
+                        if (blockTypeDecider = 0){
+                            let blockTypeDecider = 1;
+                        }else{
+                            let blockTypeDecider = 0;
+                        }
+                        let blockBuffer = Block.new(blockWidth * randomBlockPos,
+                                     0, blockHeight, blockWidth, blockTypeDecider, 1);
                         let upRow[randomBlockPos] = blockBuffer;
                         do blockBuffer.draw();
                         do unrandom.correctForNewBlock(randomBlockPos);
                     }
                     let newBlockTicks = 0;
                     //output current score
-                do showScore();
+                    do showScore();
                 }
             }
             //try move player
@@ -164,8 +188,8 @@ class GameCycle{
                 if (blockBuffer.getType() = 0){
                     let gameIsNotFinished = false;
                 }else{
-                    do BlockBuffer.erase();
-                    do BlockBuffer.dispose();
+                    do blockBuffer.erase();
+                    do blockBuffer.dispose();
                     let upRow[playerCoordinatesInArr.getX()] = 0;
                     do unrandom.correctForCollectedBlock(playerCoordinatesInArr.getX());
                     let score = score + 1;
@@ -203,6 +227,7 @@ class GameCycle{
         //anyway
         let iterator = 0;
         while (iterator < 100){
+            //bad output ;)
             do Output.printString("you are dead :(  ");
             let iterator = iterator + 1;
         }
@@ -213,10 +238,12 @@ class GameCycle{
 
     method void showScore(){
         do Output.moveCursor(0, 0);
-        do Output.printString("score: ");
+        do Output.printString(scoreStr);
         do Output.printInt(score);
-        do Output.printString(" randKey: ");
+        do Output.printString(rKeyStr);
         do Output.printInt(randKey);
+        do Output.printString(timeStr);
+        do Output.printInt(timeTicks);
         return;
     }
 

@@ -1,23 +1,59 @@
 class Block {
     field int x, y, width, height;
     field int blockType;
+    field int styleType;
 
-    constructor Block new(int rx, int ry, int blockHeight, int blockWidth, int bType) {
+    constructor Block new(int rx, int ry, int blockHeight, int blockWidth, int bType, int sType) {
         let x = rx;
         let y = ry;
         let width = blockWidth;
         let height = blockHeight;
         let blockType = bType;
+        let styleType = sType;
         return this;
     }
 
-    method void dispose() {
-        do Memory.deAlloc(this);
-        return;
-    }
-
     method void draw() {
-        do drawTypeClassic();
+        if (blockType = 0){
+            if (styleType = 0){
+                do drawTypeClassic();
+                return;
+            }
+            if (styleType = 1){
+                do drawType1();
+                return;
+            }
+            if (styleType = 2){
+                do drawType2();
+                return;
+            }
+            if (styleType = 3){
+                do drawType3();
+                return;
+            }
+            if (styleType = 4){
+                do drawType4();
+                return;
+            }
+            if (styleType = 5){
+                do drawType5();
+                return;
+            }
+            if (styleType = 6){
+                do drawType6();
+                return;
+            }
+            if (styleType = 7){
+                do drawType7();
+                return;
+            }
+        }else{
+            if (styleType = 1){
+                do drawBonusType1();
+            }else{
+                do drawBonusType2();
+            }
+        }
         return;
     }
 
@@ -36,12 +72,14 @@ class Block {
         return blockType;
     }
 
+    //styleType = 0
     method void drawTypeClassic(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width-1, y + height-1);
         return;
     }
 
+    //styleType = 1
     method void drawType1(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -52,6 +90,7 @@ class Block {
         return;
     }
 
+    //styleType = 2
     method void drawType2(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -60,6 +99,7 @@ class Block {
         return;
     }
 
+    //styleType = 3
     method void drawType3(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -70,6 +110,7 @@ class Block {
         return;
     }
 
+    //styleType = 4
     method void drawType4(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -81,6 +122,7 @@ class Block {
         return;
     }
 
+    //styleType = 5
     method void drawType5(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -93,6 +135,7 @@ class Block {
         return;
     }
 
+    //styleType = 6
     method void drawType6(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -107,6 +150,7 @@ class Block {
         return;
     }
 
+    //styleType = 7
     method void drawType7(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
@@ -123,6 +167,7 @@ class Block {
         return;
     }
 
+    //styleType = 1
     method void drawBonusType1(){
         do Screen.setColor(true);
         do Screen.drawCircle(x + 16, y + 16, 8);
@@ -131,6 +176,7 @@ class Block {
         return;
     }
 
+    //styleType = 2
     method void drawBonusType2(){
         do Screen.setColor(true);
         do Screen.drawRectangle(x + 4, y + 7, x + width - 5, y + 8);
@@ -146,6 +192,11 @@ class Block {
 
         do Screen.drawLine(x + width - 7, y + height - 10, x + 15, y);
         do Screen.drawLine(x + width - 6, y + height - 10, x + 16, y);
+        return;
+    }
+    
+    method void dispose() {
+        do Memory.deAlloc(this);
         return;
     }
 }
