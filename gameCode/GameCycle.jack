@@ -212,6 +212,7 @@ class GameCycle{
                     do unrandom.correctForCollectedBlock(playerCoordinatesInArr.getX());
                     let score = score + 1;
                     do showScore();
+                    do player.draw();
                 }
             }
             

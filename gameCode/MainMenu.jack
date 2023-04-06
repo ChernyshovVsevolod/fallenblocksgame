@@ -58,7 +58,7 @@ class MainMenu {
 
     function void play() {
         do MainMenu.window(10, 187, 500, 220);
-        do MainMenu.information(18, 21, 0, 0, 0, 0, "to start play, press p", "", "");
+        do MainMenu.information(18, 20, 0, 0, 0, 0, "to start play, press [p]", "", "");
         return;
     }
 

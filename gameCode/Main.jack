@@ -4,6 +4,7 @@ class Main{
         var Settings sets;
         let sets = Settings.new();
         while(true){
+            do Sys.wait(300);
             do MainMenu.ShowMenu(sets);
             let gameCycle = GameCycle.new(sets);
             do gameCycle.game();
