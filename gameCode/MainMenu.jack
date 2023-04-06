@@ -1,105 +1,76 @@
 class MainMenu {
-    static int x1, y1, x2, y2;
-    static string title, message;
+    static int x1, y1, x2, y2, x3, y3;
+    static string title, coment, message;
 
-    function void informationWindow(int y1, int x1, int y2, int x2, string title, string message) {
+    function void information(int y1, int x1, int y2, int x2, int y3, int x3, string title, string coment, string message) {
         
         do Output.moveCursor(y1, x1);
         do Output.printString(title);
         do Output.moveCursor(y2, x2);
+        do Output.printString(coment);
+        do Output.moveCursor(y3, x3);
         do Output.printString(message);
-           
         return;
     }
 
-    function void blockType() {
+    function void window(int x1, int y1, int x2, int y2) {
         do Screen.setColor(true);
-        do Screen.drawRectangle(4, 7, 220, 50);
+        do Screen.drawRectangle(x1, y1, x2, y2);
         do Screen.setColor(false);
-        do Screen.drawRectangle(6, 9, 218, 48);
-        do MainMenu.informationWindow(1, 8, 3, 1, "block type", "to change, press any of 0-7");
+        do Screen.drawRectangle(x1 + 2, y1 + 2, x2 - 2, y2 - 2);
+        return;
+    }
+    function void blockType() {
+        do MainMenu.window(4, 7, 225, 50);
+        do MainMenu.information(1, 8, 0, 0, 3, 1, "block type", "", "to change, press any of 0-7");
         return;
     }
 
     function void randomKey() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(4, 85, 220, 125);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(6, 87, 218, 123);
-        do MainMenu.informationWindow(8, 8, 10, 5, "random key", "to change, press k");
+        do MainMenu.window(4, 85, 220, 125);
+        do MainMenu.information(8, 8, 0, 0, 10, 5, "random key", "", "to change, press k");
         return;
     }
 
     function void ticks() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(340, 75, 505, 135);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(342, 77, 503, 133);
-        do Output.moveCursor(7, 46);
-        do Output.printString("msec in ticks");
-        do MainMenu.informationWindow(9, 43, 11, 44, "(standart is 9 in 1)", "to change, press t");
+        do MainMenu.window(340, 75, 505, 135);
+        do MainMenu.information(7, 46, 9, 43, 11, 44, "msec in ticks", "(standart is 9 in 1)", "to change, press t");
         return;
     }
 
     function void difficulty() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(340, 7, 505, 50);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(342, 9, 503, 48);
-        do MainMenu.informationWindow(1, 48, 3, 45, "difficulty", "to follow, press d");
+        do MainMenu.window(340, 7, 505, 50);
+        do MainMenu.information(1, 48, 0, 0, 3, 45, "difficulty", "", "to follow, press d");
         return;
     }
 
     function void play() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(10, 187, 500, 220);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(12, 189, 498, 218);
-        do Output.moveCursor(18, 21);
-        do Output.printString("to start play, press p");
+        do MainMenu.window(10, 187, 500, 220);
+        do MainMenu.information(18, 21, 0, 0, 0, 0, "to start play, press p", "", "");
         return;
     }
 
     function void examples() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(5, 7, 505, 50);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(7, 9, 503, 48);
-        do Output.moveCursor(1, 12);
-        do Output.printString("examples of difficulty (press to choose)");
-        do Output.moveCursor(3, 17);
-        do Output.printString("easy: e   normal: n   hard: h");
+        do MainMenu.window(5, 7, 505, 50);
+        do MainMenu.information(1, 12, 0, 0, 3, 17, "examples of difficulty (press to choose)", "", "easy: e   normal: n   hard: h");
         return;
     }
 
     function void playerParameters() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(5, 72, 505, 112);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(7, 74, 503, 110);
-        do Output.moveCursor(7, 13);
-        do Output.printString("player parameters (press to change)");
-        do Output.moveCursor(9, 1);
-        do Output.printString("movement speed: m  jump speed: j  fall speed: f  jump hight: s");
+        do MainMenu.window(5, 72, 505, 115);
+        do MainMenu.information(7, 13, 0, 0, 9, 1, "player parameters (press to change)", "", "movement speed: m  jump speed: j  fall speed: f  jump hight: s");
         return;
     }
 
     function void dropDelay() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(180, 140, 322, 178);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(182, 142, 320, 176);
-        do MainMenu.informationWindow(13, 23, 15, 23, "bloks drop delay", "to change press z");
+        do MainMenu.window(180, 140, 322, 180);
+        do MainMenu.information(13, 23, 0, 0, 15, 23, "bloks drop delay", "", "to change press z");
         return;
     }
 
     function void home() {
-        do Screen.setColor(true);
-        do Screen.drawRectangle(5, 208, 505, 242);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(7, 210, 503, 240);
-        do Output.moveCursor(20, 3);
-        do Output.printString("to start play, press p, to return to the main menu, press b");
+        do MainMenu.window(5, 208, 505, 242);
+        do MainMenu.information(20, 3, 0, 0, 0, 0, "to start play, press p, to return to the main menu, press b", "", "");
         return;
     }
 
