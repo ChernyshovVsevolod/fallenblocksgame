@@ -1,0 +1,38 @@
+class Settings{
+    //player characteristics
+    field int maxPlayerJumpHeight;
+    field int playerHorizontalSpeed;    //pixels per tick
+    field int playerJumpSpeed;
+    field int playerFallSpeed;
+    //blocks
+    field int blockMovementPeriod;
+    field int newBlockPeriod;
+    field int bonusBlockRarity; //per other blocks
+    field int standartBlockStyleType;
+    field int bonusBlockStyleType;
+    //tick delay
+    field int standartTickDelay;    //ms
+    
+
+    constructor void new(){
+        do setStandartMode();
+        return this;
+    }
+
+    method void setStandartMode(){
+        let maxPlayerJumpHeight = 145;
+        let playerHorizontalSpeed = 3;
+        let playerJumpSpeed = 3;
+        let playerFallSpeed = 2;
+        
+        let blockMovementPeriod = 20;
+        let newBlockPeriod = 70;
+        let bonusBlockRarity = 10;
+        let standartBlockStyleType = 1;
+        let bonusBlockStyleType = 1;
+
+        let standartTickDelay = 9;
+        return;
+    }
+    
+}

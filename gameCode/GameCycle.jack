@@ -1,11 +1,10 @@
 class GameCycle{
-    field bool gameIsNotFinished;
     field int blockMovementPeriod;
     field int blockMovementTicks;
     //field int blockDelay;
     field int newBlockPeriod;
     field int newBlockTicks;
-    field int keyboardCheckPeriod;
+    field int keyboardCheckPeriod;  //in ticks
     field int keyboardCheckTicks;
     field int keyboardCheckSuccessCount;
     //how unoften we take truly random things from outside to make game more random
@@ -25,6 +24,8 @@ class GameCycle{
     field String scoreStr;
     field String rKeyStr;
     field String timeStr;
+    field String pauseMessage;
+    field String endGameMessage;
     
     //field int bitmask;
     
@@ -38,20 +39,24 @@ class GameCycle{
     field int blockWidth;
     field int blockHeight;
 
+    //blockType
+    field int standartBlockStyleType;
+    field int bonusBlockStyleType;
+
     constructor GameCycle new(){
         var int i, j;
-        var int maxPlayerJumpHeight;
+        var int maxPlayerJumpHeight;//
         var Array bufferArr;
         //let bitmask = 15872; //0001111100000???
         //let blockDelay = 0;
-        let blockMovementPeriod = 20;
+        let blockMovementPeriod = 20;//
         let blockMovementTicks = 0;
-        let standartTickDelay = 9;
+        let standartTickDelay = 9;//
         let blockWidth = 32; //51
         let blockHeight = 32; //42
         let screenWidth = 512 / blockWidth;
         let screenHeigth = 256 / blockHeight;
-        let gameIsNotFinished = true;
+        //let gameIsNotFinished = true;
         let newBlockPeriod = 70;
         let newBlockTicks = 0;
 
@@ -68,10 +73,16 @@ class GameCycle{
         let scoreStr = "score: ";
         let rKeyStr = " randKey: ";
         let timeStr = " time: ";
+        let pauseMessage = "game is paused; to continue press [p]";
+        let endGameMessage = "you are dead :(  ";
 
         let maxPlayerJumpHeight = 145;
         let player = Player.new(0, 0, 30, 20, 3, 3, 2);
         let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, maxPlayerJumpHeight);
+
+        let standartBlockStyleType = 1;
+        let bonusBlockStyleType = 1;
+
         let i = 0;
         while (i < (screenHeigth)){
             let bufferArr = Array.new(screenWidth);
@@ -100,6 +111,8 @@ class GameCycle{
         var int iterator;
         var int blockTypeDecider;
         var Point playerCoords;
+        var bool gameIsNotFinished;
+        let gameIsNotFinished = true;
         while (gameIsNotFinished){
             //try move blocks
             if (blockMovementTicks > blockMovementPeriod){
@@ -162,12 +175,13 @@ class GameCycle{
                         let blockTypeDecider = blockTypeDecider 
                                     - (bonusBlockRarity * (blockTypeDecider / bonusBlockRarity));
                         if (blockTypeDecider = 0){
-                            let blockTypeDecider = 1;
+                            let blockBuffer = Block.new(blockWidth * randomBlockPos,
+                                     0, blockHeight, blockWidth, 1, standartBlockStyleType);
                         }else{
-                            let blockTypeDecider = 0;
+                            let blockBuffer = Block.new(blockWidth * randomBlockPos,
+                                     0, blockHeight, blockWidth, 0, bonusBlockStyleType);
                         }
-                        let blockBuffer = Block.new(blockWidth * randomBlockPos,
-                                     0, blockHeight, blockWidth, blockTypeDecider, 1);
+                        
                         let upRow[randomBlockPos] = blockBuffer;
                         do blockBuffer.draw();
                         do unrandom.correctForNewBlock(randomBlockPos);
@@ -197,9 +211,24 @@ class GameCycle{
                 }
             }
             
+            //take input for pause and exit
+            let key = Keyboard.keyPressed();
+            if (key = 80){      //p - pause
+                do Sys.wait(200);
+                do Output.moveCursor(10, 15);
+                do Output.printString(pauseMessage);
+                while((~(Keyboard.keyPressed() = 80)) & (~(Keyboard.keyPressed() = 140))){
+                    do Sys.wait(1);
+                }
+                let key = Keyboard.keyPressed();
+                do Sys.wait(200);
+            }
+            if (key = 140){     //esc
+                let gameIsNotFinished = false;
+            }
             //take randomness from the outside world
             if (keyboardCheckTicks > keyboardCheckPeriod){
-                let key = Keyboard.keyPressed();
+                //let key = Keyboard.keyPressed();
                 if (~(key = 0)){
                     let keyboardCheckSuccessCount = keyboardCheckSuccessCount + 1;
                     if (keyboardCheckSuccessCount > randomizingRarity){
@@ -228,7 +257,7 @@ class GameCycle{
         let iterator = 0;
         while (iterator < 100){
             //bad output ;)
-            do Output.printString("you are dead :(  ");
+            do Output.printString(endGameMessage);
             let iterator = iterator + 1;
         }
 
