@@ -1,19 +1,13 @@
 //computes positions for new blocks slightly shifting probabilities
 class UnrandomizerSimple{
     field LCGenerator random;
-    field int unrandomFactor;
-    field int totalSum;
     field int screenWidth;
     field Array probabilityArr;
-    field int bitmask;
 
-    constructor UnrandomizerSimple new(int factor, int newRandom, int scrWidth, int scrHeigth){
+    constructor UnrandomizerSimple new(int newRandom, int scrWidth){
         var int i;
         let random = newRandom;
-        //let unrandomFactor = factor;
         let screenWidth = scrWidth;
-        //let totalSum = screenWidth;
-        //let bitmask = -512;
         let probabilityArr = Array.new(screenWidth);
         let i = 0;
         while (i < screenWidth){
@@ -40,7 +34,6 @@ class UnrandomizerSimple{
             let probabilityArr[i] = probabilityArr[i] - 1;
             let i = i + 1;
         }
-        //let totalSum = totalSum + (screenWidth * unrandomFactor);
         return;
     }
 
@@ -61,7 +54,6 @@ class UnrandomizerSimple{
     }
 
     method void correctForNewBlock(int index){
-        //let totalSum = totalSum - unrandomFactor;
         let probabilityArr[index] = probabilityArr[index] + 1;
         return;
     }

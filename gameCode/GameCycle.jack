@@ -1,7 +1,7 @@
 class GameCycle{
     field int blockMovementPeriod;
     field int blockMovementTicks;
-    //field int blockDelay;
+
     field int newBlockPeriod;
     field int newBlockTicks;
     field int keyboardCheckPeriod;  //in ticks
@@ -27,28 +27,22 @@ class GameCycle{
     field String endGameMessage;
     field String restartMessage;
     
-    //field int bitmask;
-    
     field UnrandomizerSimple unrandom;
     field LCGenerator random;
     field Array blockArr;
     field Player player;
     field PlayerMovement playerMove;
-    field Point playerCoordinatesInArr;
 
     field int blockWidth;
     field int blockHeight;
 
-    //blockType
+    //blockStyleTypes
     field int standartBlockStyleType;
     field int bonusBlockStyleType;
 
     constructor GameCycle new(Settings sets){
         var int i, j;
-        //var int maxPlayerJumpHeight;//
         var Array bufferArr;
-        //let bitmask = 15872; //0001111100000???
-        //let blockDelay = 0;
         let blockMovementPeriod = sets.getBlockMovementPeriod();
         let blockMovementTicks = 0;
         let standartTickDelay = sets.getStandartTickDelay();
@@ -56,7 +50,6 @@ class GameCycle{
         let blockHeight = 32; //42
         let screenWidth = 512 / blockWidth;
         let screenHeigth = 256 / blockHeight;
-        //let gameIsNotFinished = true;
         let newBlockPeriod = sets.getNewBlockPeriod();
         let newBlockTicks = 0;
 
@@ -78,9 +71,10 @@ class GameCycle{
         let endGameMessage = "you are dead :(  ";
         let restartMessage = "to restart press any key";
 
-        //let maxPlayerJumpHeight = 145;
-        let player = Player.new(0, 0, 30, 20, sets.getPlayerHorizontalSpeed(), sets.getPlayerJumpSpeed(), sets.getPlayerFallSpeed());
-        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, sets.getMaxPlayerJumpHeight());
+        let player = Player.new(0, 0, 30, 20, sets.getPlayerHorizontalSpeed(),
+                     sets.getPlayerJumpSpeed(), sets.getPlayerFallSpeed());
+        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth,
+                     sets.getMaxPlayerJumpHeight());
 
         let standartBlockStyleType = sets.getStandartBlockStyleType();
         let bonusBlockStyleType = sets.getBonusBlockStyleType();
@@ -99,97 +93,26 @@ class GameCycle{
         
         let randKey = 7394;
         let random = LCGenerator.new(randKey);
-        let unrandom = UnrandomizerSimple.new(1, random, screenWidth, screenHeigth);
+        let unrandom = UnrandomizerSimple.new(random, screenWidth);
         return this;
     }
 
     method void game(){
-        var Array upRow, downRow;
-        var int rowNum, columnNum;
-        var Block blockBuffer;
-        var bool isRowComplete;
-        var int randomBlockPos;
-        var int key; //yap it is int
-        var int iterator;
-        var int blockTypeDecider;
-        var Point playerCoords;
+        var int key; //yap, it is int
         var bool gameIsNotFinished;
         let gameIsNotFinished = true;
         while (gameIsNotFinished){
-            //try move blocks
+            //move blocks
             if (blockMovementTicks > blockMovementPeriod){
                 let blockMovementTicks = 0;
-                let rowNum = screenHeigth - 2;
-                let downRow = blockArr[screenHeigth - 1];
-                //check if blocks can fall
-                while (rowNum > -1){
-                    let upRow = blockArr[rowNum];
-                    let columnNum = screenWidth - 1;
-                    //move blocks
-                    while (columnNum > -1){
-                        if (~(upRow[columnNum] = 0)){
-                            if (downRow[columnNum] = 0){
-                                let blockBuffer = upRow[columnNum];
-                                let upRow[columnNum] = 0;
-                                let downRow[columnNum] = blockBuffer;
-                                do blockBuffer.erase();
-                                do blockBuffer.moveDown();
-                                do blockBuffer.draw();
-                            }
-                        }
-                        let columnNum = columnNum - 1;
-                    }
-                    //check down row completeness and erase if so
-                    let columnNum = 0;
-                    let isRowComplete = true;
-                    while (columnNum < screenWidth){
-                        if (downRow[columnNum] = 0){
-                            let isRowComplete = false;
-                        }
-                        let columnNum = columnNum + 1;
-                    }
-                    if (isRowComplete){
-                        let columnNum = 0;
-                        while (columnNum < screenWidth){
-                            let blockBuffer = downRow[columnNum];
-                            let downRow[columnNum] = 0;
-                            do blockBuffer.erase();
-                            do blockBuffer.dispose();
-                            let columnNum = columnNum + 1;
-                        }
-                        do unrandom.correctForDeletedRow();
-                    }
-
-                    let downRow = upRow;
-                    let rowNum = rowNum - 1;
-                }
+                do moveBlocks();
                 do showScore();
             }
             //add random block
             if (newBlockTicks > newBlockPeriod){
                 //try add new blocks
-                let randomBlockPos = unrandom.computeNextPos();
-                let upRow = blockArr[0];
-                if (randomBlockPos > -1){
-                    if (upRow[randomBlockPos] = 0){
-                        //deside on blocktype
-                        let blockTypeDecider = (random.nextInt() & 32767) / 512;
-                        let blockTypeDecider = blockTypeDecider 
-                                    - (bonusBlockRarity * (blockTypeDecider / bonusBlockRarity));
-                        if (blockTypeDecider = 0){
-                            let blockBuffer = Block.new(blockWidth * randomBlockPos,
-                                     0, blockHeight, blockWidth, 1, bonusBlockStyleType);
-                        }else{
-                            let blockBuffer = Block.new(blockWidth * randomBlockPos,
-                                     0, blockHeight, blockWidth, 0, standartBlockStyleType);
-                        }
-                        
-                        let upRow[randomBlockPos] = blockBuffer;
-                        do blockBuffer.draw();
-                        do unrandom.correctForNewBlock(randomBlockPos);
-                    }
+                if (tryAddNewBlock()){
                     let newBlockTicks = 0;
-                    //output current score
                     do showScore();
                 }
             }
@@ -197,51 +120,19 @@ class GameCycle{
             do playerMove.execute();
 
             //check for player-block collision
-            let playerCoordinatesInArr = playerMove.getPlayerArrCoordinates();
-            let upRow = blockArr[playerCoordinatesInArr.getY()];
-            let blockBuffer = upRow[playerCoordinatesInArr.getX()];
-            if (~(blockBuffer = 0)){
-                if (blockBuffer.getType() = 0){
-                    let gameIsNotFinished = false;
-                }else{
-                    do blockBuffer.erase();
-                    do blockBuffer.dispose();
-                    let upRow[playerCoordinatesInArr.getX()] = 0;
-                    do unrandom.correctForCollectedBlock(playerCoordinatesInArr.getX());
-                    let score = score + 1;
-                    do showScore();
-                    do player.draw();
-                }
+            if (~processPlayerBlockCollisions()){
+                let gameIsNotFinished = false;
             }
             
             //take input for pause and exit
             let key = Keyboard.keyPressed();
-            if (key = 80){      //p - pause
-                do Sys.wait(200);
-                do Output.moveCursor(10, 15);
-                do Output.printString(pauseMessage);
-                while((~(Keyboard.keyPressed() = 80)) & (~(Keyboard.keyPressed() = 140))){
-                    do Sys.wait(1);
-                }
-                let key = Keyboard.keyPressed();
-                do Sys.wait(200);
-            }
-            if (key = 140){     //esc
+            if (~processPauseAndExit(key)){
                 let gameIsNotFinished = false;
             }
+            
             //take randomness from the outside world
             if (keyboardCheckTicks > keyboardCheckPeriod){
-                //let key = Keyboard.keyPressed();
-                if (~(key = 0)){
-                    let keyboardCheckSuccessCount = keyboardCheckSuccessCount + 1;
-                    if (keyboardCheckSuccessCount > randomizingRarity){
-                        //old random is disposed in unrandom
-                        let randKey = (timeTicks + key) & 32767;
-                        let random = LCGenerator.new(randKey);
-                        do unrandom.setLCG(random);
-                        let keyboardCheckSuccessCount = 0;
-                    }
-                }
+                do changeRandom(key);
                 let keyboardCheckTicks = 0;
             }
 
@@ -257,9 +148,155 @@ class GameCycle{
 
         //player is dead here or game is stopped
         //anyway
+        do showDeathScreen();
+
+        return;
+    }
+
+        method void moveBlocks(){
+        var Array upRow, downRow;
+        var int rowNum, columnNum;
+        var Block blockBuffer;
+        var bool isRowComplete;
+        let rowNum = screenHeigth - 2;
+        let downRow = blockArr[screenHeigth - 1];
+        //check if blocks can fall
+        while (rowNum > -1){
+            let upRow = blockArr[rowNum];
+            let columnNum = screenWidth - 1;
+            //move blocks
+            while (columnNum > -1){
+                if (~(upRow[columnNum] = 0)){
+                    if (downRow[columnNum] = 0){
+                        let blockBuffer = upRow[columnNum];
+                        let upRow[columnNum] = 0;
+                        let downRow[columnNum] = blockBuffer;
+                        do blockBuffer.erase();
+                        do blockBuffer.moveDown();
+                        do blockBuffer.draw();
+                    }
+                }
+                let columnNum = columnNum - 1;
+            }
+            //check down row completeness and erase if so
+            let columnNum = 0;
+            let isRowComplete = true;
+            while (columnNum < screenWidth){
+                if (downRow[columnNum] = 0){
+                    let isRowComplete = false;
+                }
+                let columnNum = columnNum + 1;
+            }
+            if (isRowComplete){
+                let columnNum = 0;
+                while (columnNum < screenWidth){
+                    let blockBuffer = downRow[columnNum];
+                    let downRow[columnNum] = 0;
+                    do blockBuffer.erase();
+                    do blockBuffer.dispose();
+                    let columnNum = columnNum + 1;
+                }
+                do unrandom.correctForDeletedRow();
+            }
+
+            let downRow = upRow;
+            let rowNum = rowNum - 1;
+        }
+        return;
+    }
+
+    method bool tryAddNewBlock(){
+        var Array upRow;
+        var int randomBlockPos;
+        var int blockTypeDecider;
+        var Block blockBuffer;
+        let randomBlockPos = unrandom.computeNextPos();
+        let upRow = blockArr[0];
+        if (randomBlockPos > -1){
+            if (upRow[randomBlockPos] = 0){
+                let blockTypeDecider = (random.nextInt() & 32767) / 512;
+                let blockTypeDecider = blockTypeDecider 
+                            - (bonusBlockRarity * (blockTypeDecider / bonusBlockRarity));
+                if (blockTypeDecider = 0){
+                    //bonus block
+                    let blockBuffer = Block.new(blockWidth * randomBlockPos,
+                                0, blockHeight, blockWidth, 1, bonusBlockStyleType);
+                }else{
+                    //standart block
+                    let blockBuffer = Block.new(blockWidth * randomBlockPos,
+                                0, blockHeight, blockWidth, 0, standartBlockStyleType);
+                }
+                
+                let upRow[randomBlockPos] = blockBuffer;
+                do blockBuffer.draw();
+                do unrandom.correctForNewBlock(randomBlockPos);
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    method bool processPlayerBlockCollisions(){
+        var Point playerCoordinatesInArr;   //disposed in player
+        var Array row;
+        var Block blockBuffer;
+        var bool gameIsNotFinished;
+        let gameIsNotFinished = true;
+        let playerCoordinatesInArr = playerMove.getPlayerArrCoordinates();
+        let row = blockArr[playerCoordinatesInArr.getY()];
+        let blockBuffer = row[playerCoordinatesInArr.getX()];
+        if (~(blockBuffer = 0)){
+            if (blockBuffer.getType() = 0){
+                return false;
+            }else{
+                do blockBuffer.erase();
+                do blockBuffer.dispose();
+                let row[playerCoordinatesInArr.getX()] = 0;
+                do unrandom.correctForCollectedBlock(playerCoordinatesInArr.getX());
+                let score = score + 1;
+                do showScore();
+                do player.draw();
+            }
+        }
+        return true;
+    }
+
+    method bool processPauseAndExit(int key){
+        if (key = 80){      //p - pause
+            do Sys.wait(200);
+            do Output.moveCursor(10, 15);
+            do Output.printString(pauseMessage);
+            while((~(Keyboard.keyPressed() = 80)) & (~(Keyboard.keyPressed() = 140))){
+                do Sys.wait(1);
+            }
+            let key = Keyboard.keyPressed();
+            do Sys.wait(200);
+        }
+        if (key = 140){     //esc
+            return false;
+        }
+        return true;
+    }
+
+    method void changeRandom(int key){
+        if (~(key = 0)){
+            let keyboardCheckSuccessCount = keyboardCheckSuccessCount + 1;
+            if (keyboardCheckSuccessCount > randomizingRarity){
+                let randKey = (timeTicks + key) & 32767;
+                //old random is disposed in unrandom
+                let random = LCGenerator.new(randKey);
+                do unrandom.setLCG(random);
+                let keyboardCheckSuccessCount = 0;
+            }
+        }
+        return;
+    }
+
+    method void showDeathScreen(){
+        var int iterator;
         let iterator = 0;
         while (iterator < 100){
-            //bad output ;)
             do Output.printString(endGameMessage);
             let iterator = iterator + 1;
         }
@@ -274,8 +311,6 @@ class GameCycle{
         do MainMenu.window(50, 200, 460, 230);
         do Output.moveCursor(19, 20);
         do Output.printString(restartMessage);
-
-        //dispose something? nope
         return;
     }
 
