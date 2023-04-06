@@ -20,6 +20,13 @@ class MainMenu {
         do Screen.drawRectangle(x1 + 2, y1 + 2, x2 - 2, y2 - 2);
         return;
     }
+
+    function void changeParameterWindow() {
+        do Output.moveCursor(11, 7);
+        do Output.printString("to change parameter, input a number and press enter");
+        return;
+    }
+
     function void blockType() {
         do MainMenu.window(4, 7, 225, 50);
         do MainMenu.information(1, 8, 0, 0, 3, 1, "block type", "", "to change, press any of 0-7");
@@ -52,13 +59,15 @@ class MainMenu {
 
     function void examples() {
         do MainMenu.window(5, 7, 505, 50);
-        do MainMenu.information(1, 12, 0, 0, 3, 17, "examples of difficulty (press to choose)", "", "easy: e   normal: n   hard: h");
+        do MainMenu.information(1, 12, 0, 0, 3, 17, "examples of difficulty (press to choose)", "", 
+        "easy: e   normal: n   hard: h");
         return;
     }
 
     function void playerParameters() {
         do MainMenu.window(5, 72, 505, 115);
-        do MainMenu.information(7, 13, 0, 0, 9, 1, "player parameters (press to change)", "", "movement speed: m  jump speed: j  fall speed: f  jump hight: s");
+        do MainMenu.information(7, 13, 0, 0, 9, 1, "player parameters (press to change)", "", 
+        "movement speed: m  jump speed: j  fall speed: f  jump hight: s");
         return;
     }
 
@@ -122,6 +131,8 @@ class MainMenu {
     //             do MainMenu.play();
     //         }
     //     }
+    //     do Screen.setColor(false);
+    //     do Screen.drawRectangle(0, 0, 511, 255);
     //     return; // start geme
     // }
 }
