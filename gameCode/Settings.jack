@@ -13,8 +13,11 @@ class Settings{
     //tick delay
     field int standartTickDelay;    //ms
     
+    //settings mod
+    field String mod;
 
-    constructor void new(){
+    constructor Settings new(){
+        let mod = "a";
         do setStandartMode();
         return this;
     }
@@ -32,7 +35,127 @@ class Settings{
         let bonusBlockStyleType = 1;
 
         let standartTickDelay = 9;
+
+        do mod.dispose();
+        let mod = "normal";
+        return;
+    }
+
+    function bool CheckIfCorrect(int lowBorder, int upBorder, int value){
+        var String message;
+        if ((value < lowBorder) | (value > upBorder)){
+            let message = "Incorrect value";
+            do Output.printString(message);
+            do message.dispose();
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    method int getMaxPlayerJumpHeight(){
+        return maxPlayerJumpHeight;
+    }
+
+    method void setMaxPlayerJumpHeight(int value){
+        if (Settings.CheckIfCorrect(0, 2000, value)){
+            let maxPlayerJumpHeight = value;
+        }
         return;
     }
     
+    method int getPlayerHorizontalSpeed(){
+        return playerHorizontalSpeed;
+    }
+
+    method void setPlayerHorizontalSpeed(int value){
+        let playerHorizontalSpeed = value;
+        return;
+    }
+
+    method int getPlayerJumpSpeed(){
+        return playerJumpSpeed;
+    }
+
+    method void setPlayerJumpSpeed(int value){
+        let playerJumpSpeed = value;
+        return;
+    }
+
+    method int getPlayerFallSpeed(){
+        return playerFallSpeed;
+    }
+
+    method void setPlayerFallSpeed(int value){
+        let playerFallSpeed = value;
+        return;
+    }
+
+    method int getBlockMovementPeriod(){
+        return blockMovementPeriod;
+    }
+
+    method void setBlockMovementPeriod(int value){
+        let blockMovementPeriod = value;
+        return;
+    }
+
+    method int getNewBlockPeriod(){
+        return newBlockPeriod;
+    }
+
+    method void setNewBlockPeriod(int value){
+        let newBlockPeriod = value;
+        return;
+    }
+
+    method int getBonusBlockRarity(){
+        return bonusBlockRarity;
+    }
+
+    method void setBonusBlockRarity(int value){
+        let bonusBlockRarity = value;
+        return;
+    }
+
+    method int getStandartBlockStyleType(){
+        return standartBlockStyleType;
+    }
+
+    method void setStandartBlockStyleType(int value){
+        if (Settings.CheckIfCorrect(0, 7, value)){
+            let standartBlockStyleType = value;
+        }
+        return;
+    }
+
+    method int getBonusBlockStyleType(){
+        return bonusBlockStyleType;
+    }
+
+    method void setBonusBlockStyleType(int value){
+        if (Settings.CheckIfCorrect(1, 2, value)){
+            let bonusBlockStyleType = value;
+        }
+        return;
+    }
+
+    method int getStandartTickDelay(){
+        return standartTickDelay;
+    }
+
+    method void setStandartTickDelay(int value){
+        let standartTickDelay = value;
+        return;
+    }
+
+    method int getMod(){
+        return mod;
+    }
+
+    method void dispose(){
+        do mod.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
 }

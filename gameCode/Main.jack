@@ -1,8 +1,19 @@
 class Main{
     function void main() {
         var GameCycle gameCycle;
-        let gameCycle = GameCycle.new();
-        do gameCycle.game();
+        var Settings sets;
+        let sets = Settings.new();
+        while(true){
+            do MainMenu.ShowMenu(sets);
+            let gameCycle = GameCycle.new(sets);
+            do gameCycle.game();
+            do gameCycle.dispose();
+            do Sys.wait(500);
+            while (Keyboard.keyPressed() = 0){
+                do Sys.wait(10);
+            }
+        }
+        do sets.dispose();
         return;
     }
 }

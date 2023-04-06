@@ -26,6 +26,7 @@ class GameCycle{
     field String timeStr;
     field String pauseMessage;
     field String endGameMessage;
+    field String restartMessage;
     
     //field int bitmask;
     
@@ -43,30 +44,32 @@ class GameCycle{
     field int standartBlockStyleType;
     field int bonusBlockStyleType;
 
-    constructor GameCycle new(){
+    constructor GameCycle new(Settings sets){
         var int i, j;
-        var int maxPlayerJumpHeight;//
+        //var int maxPlayerJumpHeight;//
         var Array bufferArr;
         //let bitmask = 15872; //0001111100000???
         //let blockDelay = 0;
-        let blockMovementPeriod = 20;//
+        let blockMovementPeriod = sets.getBlockMovementPeriod();
         let blockMovementTicks = 0;
-        let standartTickDelay = 9;//
+        let standartTickDelay = sets.getStandartTickDelay();
         let blockWidth = 32; //51
         let blockHeight = 32; //42
         let screenWidth = 512 / blockWidth;
         let screenHeigth = 256 / blockHeight;
         //let gameIsNotFinished = true;
-        let newBlockPeriod = 70;
+        let newBlockPeriod = sets.getNewBlockPeriod();
         let newBlockTicks = 0;
 
-        let bonusBlockRarity = 10;
+        let bonusBlockRarity = sets.getBonusBlockRarity();
 
         let keyboardCheckPeriod = 50;
         let keyboardCheckTicks = 0;
         let keyboardCheckSuccessCount = 0;
         let randomizingRarity = 7;
         let timeTicks = 0;
+
+        let score = 0;
         
         let blockArr = Array.new(screenHeigth);
 
@@ -75,13 +78,14 @@ class GameCycle{
         let timeStr = " time: ";
         let pauseMessage = "game is paused; to continue press [p]";
         let endGameMessage = "you are dead :(  ";
+        let restartMessage = "to restart press any key";
 
-        let maxPlayerJumpHeight = 145;
-        let player = Player.new(0, 0, 30, 20, 3, 3, 2);
-        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, maxPlayerJumpHeight);
+        //let maxPlayerJumpHeight = 145;
+        let player = Player.new(0, 0, 30, 20, sets.getPlayerHorizontalSpeed(), sets.getPlayerJumpSpeed(), sets.getPlayerFallSpeed());
+        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth, sets.getMaxPlayerJumpHeight());
 
-        let standartBlockStyleType = 1;
-        let bonusBlockStyleType = 1;
+        let standartBlockStyleType = sets.getStandartBlockStyleType();
+        let bonusBlockStyleType = sets.getBonusBlockStyleType();
 
         let i = 0;
         while (i < (screenHeigth)){
@@ -176,10 +180,10 @@ class GameCycle{
                                     - (bonusBlockRarity * (blockTypeDecider / bonusBlockRarity));
                         if (blockTypeDecider = 0){
                             let blockBuffer = Block.new(blockWidth * randomBlockPos,
-                                     0, blockHeight, blockWidth, 1, standartBlockStyleType);
+                                     0, blockHeight, blockWidth, 1, bonusBlockStyleType);
                         }else{
                             let blockBuffer = Block.new(blockWidth * randomBlockPos,
-                                     0, blockHeight, blockWidth, 0, bonusBlockStyleType);
+                                     0, blockHeight, blockWidth, 0, standartBlockStyleType);
                         }
                         
                         let upRow[randomBlockPos] = blockBuffer;
@@ -260,6 +264,17 @@ class GameCycle{
             do Output.printString(endGameMessage);
             let iterator = iterator + 1;
         }
+        do MainMenu.window(50, 100, 460, 130);
+        do Output.moveCursor(10, 15);
+        do Output.printString(scoreStr);
+        do Output.printInt(score);
+        do Output.moveCursor(10, 36);
+        do Output.printString(timeStr);
+        do Output.printInt(timeTicks);
+
+        do MainMenu.window(50, 200, 460, 230);
+        do Output.moveCursor(19, 20);
+        do Output.printString(restartMessage);
 
         //dispose something? nope
         return;
@@ -280,9 +295,10 @@ class GameCycle{
         var int i;
         var Array a;
         let i = 0;
-        while (i < screenWidth){
+        while (i < screenHeigth){
             let a = blockArr[i];
             do a.dispose();
+            let i = i + 1;
         }
         do blockArr.dispose();
         do player.dispose();

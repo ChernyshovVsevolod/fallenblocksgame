@@ -1,15 +1,17 @@
 class MainMenu {
-    static int x1, y1, x2, y2, x3, y3;
-    static string title, coment, message;
+    //static int x1, y1, x2, y2, x3, y3;
+    //static string title, comment, message;
 
-    function void information(int y1, int x1, int y2, int x2, int y3, int x3, string title, string coment, string message) {
-        
+    function void information(int y1, int x1, int y2, int x2, int y3, int x3, String title, String comment, String message) {
         do Output.moveCursor(y1, x1);
         do Output.printString(title);
         do Output.moveCursor(y2, x2);
-        do Output.printString(coment);
+        do Output.printString(comment);
         do Output.moveCursor(y3, x3);
         do Output.printString(message);
+        do title.dispose();
+        do comment.dispose();
+        do message.dispose();
         return;
     }
 
@@ -22,32 +24,35 @@ class MainMenu {
     }
 
     function void changeParameterWindow() {
+        var String message;
         do Output.moveCursor(11, 7);
-        do Output.printString("to change parameter, input a number and press enter");
+        let message = "to change parameter, input a number and press enter";
+        do Output.printString(message);
+        do  message.dispose();
         return;
     }
 
     function void blockType() {
         do MainMenu.window(4, 7, 225, 50);
-        do MainMenu.information(1, 8, 0, 0, 3, 1, "block type", "", "to change, press any of 0-7");
+        do MainMenu.information(1, 4, 0, 0, 3, 1, "standart block type", " ", "to change in 0-7, press [q]");
         return;
     }
 
     function void randomKey() {
-        do MainMenu.window(4, 85, 220, 125);
-        do MainMenu.information(8, 8, 0, 0, 10, 5, "random key", "", "to change, press k");
+        do MainMenu.window(4, 85, 225, 125);
+        do MainMenu.information(8, 4, 0, 0, 10, 1, "bonus block type", "", "to change in 1-2, press [k]");
         return;
     }
 
     function void ticks() {
-        do MainMenu.window(340, 75, 505, 135);
-        do MainMenu.information(7, 46, 9, 43, 11, 44, "msec in ticks", "(standart is 9 in 1)", "to change, press t");
+        do MainMenu.window(340, 86, 505, 146);
+        do MainMenu.information(8, 46, 10, 43, 12, 43, "delay per tick", "(standart is 9 in 1)", "to change, press [t]");
         return;
     }
 
     function void difficulty() {
-        do MainMenu.window(340, 7, 505, 50);
-        do MainMenu.information(1, 48, 0, 0, 3, 45, "difficulty", "", "to follow, press d");
+        do MainMenu.window(340, 7, 505, 70);
+        do MainMenu.information(1, 48, 3, 45, 5, 43, "difficulty", "and player stats", "to follow, press [d]");
         return;
     }
 
@@ -59,80 +64,112 @@ class MainMenu {
 
     function void examples() {
         do MainMenu.window(5, 7, 505, 50);
-        do MainMenu.information(1, 12, 0, 0, 3, 17, "examples of difficulty (press to choose)", "", 
-        "easy: e   normal: n   hard: h");
+        do MainMenu.information(1, 12, 0, 0, 3, 10, "examples of difficulty (press to choose)", "", 
+        "woops, will be available in future updates ;)");
+        //"easy: e   normal: n   hard: h");
         return;
     }
 
     function void playerParameters() {
-        do MainMenu.window(5, 72, 505, 115);
-        do MainMenu.information(7, 13, 0, 0, 9, 1, "player parameters (press to change)", "", 
-        "movement speed: m  jump speed: j  fall speed: f  jump hight: s");
+        do MainMenu.window(5, 72, 505, 126);
+        do MainMenu.information(7, 13, 9, 23, 10, 8, "player parameters (press to change)", "horizontal speed: [m]", 
+        "jump speed: [j]  fall speed: [f]  jump hight: [s]");
         return;
     }
 
     function void dropDelay() {
-        do MainMenu.window(180, 140, 322, 180);
-        do MainMenu.information(13, 23, 0, 0, 15, 23, "bloks drop delay", "", "to change press z");
+        do MainMenu.window(164, 140, 322, 180);
+        do MainMenu.information(13, 23, 0, 0, 15, 21, "bloks drop delay", "", "to change press [z]");
         return;
     }
 
     function void home() {
         do MainMenu.window(5, 208, 505, 242);
-        do MainMenu.information(20, 3, 0, 0, 0, 0, "to start play, press p, to return to the main menu, press b", "", "");
+        do MainMenu.information(20, 1, 0, 0, 0, 0, "to start play, press [p], to return to the main menu, press [b]", "", "");
         return;
     }
 
-    // function void MainMenu() {
-    //     do MainMenu.blockType();
-    //     do MainMenu.randomKey();
-    //     do MainMenu.ticks();
-    //     do MainMenu.difficulty();
-    //     do MainMenu.play();
-    //     var char key;
-    //     let key = 0;
-    //     while (~(key = p)) {
-    //         while (key = 0) {
-    //             let key = Keyboard.keyPressed();
-    //         }
-    //         if (key = n0) { do GameCycle.settings.0}
-    //         if (key = n1) { do GameCycle.settings.1}
-    //         if (key = n2) { do GameCycle.settings.2}
-    //         if (key = n3) { do GameCycle.settings.3}
-    //         if (key = n4) { do GameCycle.settings.4}
-    //         if (key = n5) { do GameCycle.settings.5}
-    //         if (key = n6) { do GameCycle.settings.6}
-    //         if (key = n7) { do GameCycle.settings.7}
-    //         if (key = k) { do GameCycle.settings.k}
-    //         if (key = t) { do GameCycle.settings.t}
-    //         if (key = d) {
-    //             do Screen.setColor(false);
-    //             do Screen.drawRectangle(0, 0, 511, 255);
-    //             do MainMenu.examples();
-    //             do MainMenu.playerParameters();
-    //             do MainMenu.dropDelay();
-    //             do MainMenu.home();
-    //         }
-    //         if (key = e) { do GameCycle.settings.e}
-    //         if (key = n) { do GameCycle.settings.n}
-    //         if (key = h) { do GameCycle.settings.h}
-    //         if (key = m) { do GameCycle.settings.m}
-    //         if (key = j) { do GameCycle.settings.j}
-    //         if (key = f) { do GameCycle.settings.f}
-    //         if (key = s) { do GameCycle.settings.s}
-    //         if (key = z) { do GameCycle.settings.z}
-    //         if (key = b) {
-    //             do Screen.setColor(false);
-    //             do Screen.drawRectangle(0, 0, 511, 255);
-    //             do MainMenu.blockType();
-    //             do MainMenu.randomKey();
-    //             do MainMenu.ticks();
-    //             do MainMenu.difficulty();
-    //             do MainMenu.play();
-    //         }
-    //     }
-    //     do Screen.setColor(false);
-    //     do Screen.drawRectangle(0, 0, 511, 255);
-    //     return; // start geme
-    // }
+    function int GetIntValueFromUser(int currentValue){
+        var int newValue;
+        var String message;
+        do Sys.wait(200);
+        do Screen.clearScreen();
+        do MainMenu.changeParameterWindow();
+        do Output.moveCursor(0, 0);
+        let message = "value now is ";
+        do Output.printString(message);
+        do message.dispose();
+        do Output.printInt(currentValue);
+        do Output.moveCursor(1, 0);
+        let message = "new value is ";
+        //do Output.printString();
+        let newValue = Keyboard.readInt(message);
+        do message.dispose();
+        do MainMenu.displayCatalog();
+        return newValue;
+    }
+
+    function void displayCatalog(){
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 0, 511, 255);
+        do MainMenu.blockType();
+        do MainMenu.randomKey();
+        do MainMenu.ticks();
+        do MainMenu.difficulty();
+        do MainMenu.play();
+        return;
+    }
+
+    function void ShowMenu(Settings sets) {
+        var char key;
+        do Screen.clearScreen();
+        do MainMenu.blockType();
+        do MainMenu.randomKey();
+        do MainMenu.ticks();
+        do MainMenu.difficulty();
+        do MainMenu.play();
+        let key = 0;
+        while (~(key = 80)) {   //'p'
+            let key = Keyboard.keyPressed();
+            if (key = 81){  //'q'
+                do sets.setStandartBlockStyleType(MainMenu.GetIntValueFromUser(sets.getStandartBlockStyleType()));
+            }
+            if (key = 75){  //'k'
+                do sets.setBonusBlockStyleType(MainMenu.GetIntValueFromUser(sets.getBonusBlockStyleType()));
+            }
+            if (key = 77){  //'m'
+                do sets.setPlayerHorizontalSpeed(MainMenu.GetIntValueFromUser(sets.getPlayerHorizontalSpeed()));
+            }
+            if (key = 74){  //'j'
+                do sets.setPlayerJumpSpeed(MainMenu.GetIntValueFromUser(sets.getPlayerJumpSpeed()));
+            }
+            if (key = 70){  //'f'
+                do sets.setPlayerFallSpeed(MainMenu.GetIntValueFromUser(sets.getPlayerFallSpeed()));
+            }
+            if (key = 83){  //'s'
+                do sets.setMaxPlayerJumpHeight(MainMenu.GetIntValueFromUser(sets.getMaxPlayerJumpHeight()));
+            }
+            if (key = 90){  //'z'
+                do sets.setBlockMovementPeriod(MainMenu.GetIntValueFromUser(sets.getBlockMovementPeriod()));
+            }
+            if (key = 84){  //'t'
+                do sets.setStandartTickDelay(MainMenu.GetIntValueFromUser(sets.getStandartTickDelay()));
+            }
+            if (key = 68) { //'d'
+                do Screen.setColor(false);
+                do Screen.drawRectangle(0, 0, 511, 255);
+                do MainMenu.examples();
+                do MainMenu.playerParameters();
+                do MainMenu.dropDelay();
+                do MainMenu.home();
+            }
+            if (key = 66) {  //'b'
+                do MainMenu.displayCatalog();
+            }
+        }
+        do Sys.wait(200);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 0, 511, 255);
+        return; // start geme
+    }
 }
