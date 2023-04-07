@@ -1,24 +1,17 @@
 class GameCycle{
+    //periods in ticks
     field int blockMovementPeriod;
-    field int blockMovementTicks;
-
     field int newBlockPeriod;
-    field int newBlockTicks;
-    field int keyboardCheckPeriod;  //in ticks
-    field int keyboardCheckTicks;
-    field int keyboardCheckSuccessCount;
-    //how unoften we take truly random things from outside to make game more random
-    field int randomizingRarity; //in number of successful keyboardCheckPeriods
-    field int randKey;
+    field int keyboardCheckPeriod;
 
-    field int timeTicks;
-
-    field int standartTickDelay;
-    field int screenWidth;
-    field int screenHeigth;
-    field int score;
-
+    //blocks parameters
     field int bonusBlockRarity; // > 0, the higher the rarer
+    field int blockWidth;
+    field int blockHeight;
+    field int screenWidth;  //in blocks
+    field int screenHeigth;
+    field int standartBlockStyleType;
+    field int bonusBlockStyleType;
 
     //output strings
     field String scoreStr;
@@ -27,58 +20,56 @@ class GameCycle{
     field String endGameMessage;
     field String restartMessage;
     
+    //objects
     field UnrandomizerSimple unrandom;
     field LCGenerator random;
     field Array blockArr;
     field Player player;
     field PlayerMovement playerMove;
 
-    field int blockWidth;
-    field int blockHeight;
+    //other
+    field int keyboardCheckSuccessCount;
+    field int randomizingRarity; //in number of successful keyboardCheckPeriods
 
-    //blockStyleTypes
-    field int standartBlockStyleType;
-    field int bonusBlockStyleType;
+    field int score;
+    field int timeTicks;
+
+    field int standartTickDelay;
+
 
     constructor GameCycle new(Settings sets){
         var int i, j;
         var Array bufferArr;
+
         let blockMovementPeriod = sets.getBlockMovementPeriod();
-        let blockMovementTicks = 0;
-        let standartTickDelay = sets.getStandartTickDelay();
-        let blockWidth = 32; //51
-        let blockHeight = 32; //42
+        let newBlockPeriod = sets.getNewBlockPeriod();
+        let keyboardCheckPeriod = 50;
+
+        //blocks parameters
+        let bonusBlockRarity = sets.getBonusBlockRarity();
+        let blockWidth = 32;
+        let blockHeight = 32;
         let screenWidth = 512 / blockWidth;
         let screenHeigth = 256 / blockHeight;
-        let newBlockPeriod = sets.getNewBlockPeriod();
-        let newBlockTicks = 0;
+        let standartBlockStyleType = sets.getStandartBlockStyleType();
+        let bonusBlockStyleType = sets.getBonusBlockStyleType();
 
-        let bonusBlockRarity = sets.getBonusBlockRarity();
-
-        let keyboardCheckPeriod = 50;
-        let keyboardCheckTicks = 0;
-        let keyboardCheckSuccessCount = 0;
-        let randomizingRarity = 7;
-        let timeTicks = 0;
-
-        let score = 0;
-        
-        let blockArr = Array.new(screenHeigth);
-
+        //output strings
         let scoreStr = "score: ";
         let timeStr = " time: ";
         let pauseMessage = "game is paused; to continue press [p]";
         let endGameMessage = "you are dead :(  ";
         let restartMessage = "to restart press any key";
 
-        let player = Player.new(0, 0, 30, 20, sets.getPlayerHorizontalSpeed(),
-                     sets.getPlayerJumpSpeed(), sets.getPlayerFallSpeed());
-        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth,
-                     sets.getMaxPlayerJumpHeight());
-
-        let standartBlockStyleType = sets.getStandartBlockStyleType();
-        let bonusBlockStyleType = sets.getBonusBlockStyleType();
-
+        //other
+        let keyboardCheckSuccessCount = 0;
+        let randomizingRarity = 7;
+        let score = 0;
+        let timeTicks = 0;
+        let standartTickDelay = sets.getStandartTickDelay();
+        
+        //objects
+        let blockArr = Array.new(screenHeigth);
         let i = 0;
         while (i < (screenHeigth)){
             let bufferArr = Array.new(screenWidth);
@@ -91,15 +82,25 @@ class GameCycle{
             let i = i + 1;
         }
         
-        let randKey = 7394;
-        let random = LCGenerator.new(randKey);
+        let random = LCGenerator.new(7394);
         let unrandom = UnrandomizerSimple.new(random, screenWidth);
+
+        let player = Player.new(0, 0, 30, 20, sets.getPlayerHorizontalSpeed(),
+                     sets.getPlayerJumpSpeed(), sets.getPlayerFallSpeed());
+        let playerMove = PlayerMovement.new(player, blockArr, blockHeight, blockWidth,
+                     sets.getMaxPlayerJumpHeight());
         return this;
     }
 
     method void game(){
-        var int key; //yap, it is int
+        var int key;
         var bool gameIsNotFinished;
+        var int blockMovementTicks;
+        var int newBlockTicks;
+        var int keyboardCheckTicks;
+        let keyboardCheckTicks = 0;
+        let newBlockTicks = 0;
+        let blockMovementPeriod = 0;
         let gameIsNotFinished = true;
         while (gameIsNotFinished){
             //move blocks
@@ -108,15 +109,16 @@ class GameCycle{
                 do moveBlocks();
                 do showScore();
             }
+
             //add random block
             if (newBlockTicks > newBlockPeriod){
-                //try add new blocks
                 if (tryAddNewBlock()){
                     let newBlockTicks = 0;
                     do showScore();
                 }
             }
-            //try move player
+            
+            //move player
             do playerMove.execute();
 
             //check for player-block collision
@@ -130,7 +132,7 @@ class GameCycle{
                 let gameIsNotFinished = false;
             }
             
-            //take randomness from the outside world
+            //randomize the game
             if (keyboardCheckTicks > keyboardCheckPeriod){
                 do changeRandom(key);
                 let keyboardCheckTicks = 0;
@@ -153,7 +155,7 @@ class GameCycle{
         return;
     }
 
-        method void moveBlocks(){
+    method void moveBlocks(){
         var Array upRow, downRow;
         var int rowNum, columnNum;
         var Block blockBuffer;
@@ -280,6 +282,7 @@ class GameCycle{
     }
 
     method void changeRandom(int key){
+        var int randKey;
         if (~(key = 0)){
             let keyboardCheckSuccessCount = keyboardCheckSuccessCount + 1;
             if (keyboardCheckSuccessCount > randomizingRarity){
