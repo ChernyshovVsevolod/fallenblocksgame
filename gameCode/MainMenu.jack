@@ -35,7 +35,7 @@ class MainMenu {
         return;
     }
 
-    function void bonusBloks() {
+    function void bonusBlocks() {
         do MainMenu.window(4, 85, 225, 125);
         do MainMenu.information(8, 4, 0, 0, 10, 1, "bonus block type", "", "to change in 1-2, press [k]");
         return;
@@ -108,7 +108,7 @@ class MainMenu {
     function void displayCatalog(){
         do Screen.clearScreen();
         do MainMenu.blockType();
-        do MainMenu.randomKey();
+        do MainMenu.bonusBlocks();
         do MainMenu.ticks();
         do MainMenu.difficulty();
         do MainMenu.play();
