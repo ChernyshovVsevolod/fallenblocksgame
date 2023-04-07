@@ -1,0 +1,974 @@
+function Block.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 3
+pop this 2
+push argument 2
+pop this 3
+push argument 4
+pop this 4
+push argument 5
+pop this 5
+push pointer 0
+return
+function Block.draw 0
+push argument 0
+pop pointer 0
+push this 4
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 5
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Block.drawTypeClassic 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+push this 5
+push constant 1
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call Block.drawType1 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE2
+push this 5
+push constant 2
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+call Block.drawType2 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE3
+push this 5
+push constant 3
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+call Block.drawType3 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE4
+push this 5
+push constant 4
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push pointer 0
+call Block.drawType4 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE5
+push this 5
+push constant 5
+eq
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push pointer 0
+call Block.drawType5 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE6
+push this 5
+push constant 6
+eq
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push pointer 0
+call Block.drawType6 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE7
+push this 5
+push constant 7
+eq
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push pointer 0
+call Block.drawType7 1
+pop temp 0
+push constant 0
+return
+label IF_FALSE8
+goto IF_END0
+label IF_FALSE0
+push this 5
+push constant 1
+eq
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push pointer 0
+call Block.drawBonusType1 1
+pop temp 0
+goto IF_END9
+label IF_FALSE9
+push pointer 0
+call Block.drawBonusType2 1
+pop temp 0
+label IF_END9
+label IF_END0
+push constant 0
+return
+function Block.erase 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Block.moveDown 0
+push argument 0
+pop pointer 0
+push this 1
+push this 3
+add
+pop this 1
+push constant 0
+return
+function Block.getType 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Block.drawTypeClassic 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Block.drawType1 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push this 3
+add
+push constant 5
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 8
+add
+push this 1
+push constant 8
+add
+push this 0
+push this 2
+add
+push constant 9
+sub
+push this 1
+push this 3
+add
+push constant 9
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Block.drawType2 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 16
+add
+push this 1
+push constant 16
+add
+push constant 8
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Block.drawType3 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push this 3
+add
+push constant 5
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 16
+add
+push this 1
+push constant 16
+add
+push constant 8
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Block.drawType4 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push this 3
+add
+push constant 5
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push this 3
+add
+push constant 5
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push this 3
+add
+push constant 5
+sub
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push constant 4
+add
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+return
+function Block.drawType5 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 2
+add
+push this 1
+push constant 2
+add
+push this 0
+push this 2
+add
+push constant 3
+sub
+push this 1
+push this 3
+add
+push constant 3
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 8
+add
+push this 1
+push constant 20
+add
+push this 0
+push this 2
+add
+push constant 8
+sub
+push this 1
+push constant 22
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 10
+add
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push this 2
+add
+push constant 10
+sub
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Block.drawType6 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 2
+add
+push this 1
+push constant 2
+add
+push this 0
+push this 2
+add
+push constant 3
+sub
+push this 1
+push this 3
+add
+push constant 3
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 8
+add
+push this 1
+push constant 20
+add
+push this 0
+push this 2
+add
+push constant 8
+sub
+push this 1
+push constant 22
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 10
+add
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push this 2
+add
+push constant 10
+sub
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push constant 7
+add
+push this 1
+push constant 4
+add
+push this 0
+push constant 12
+add
+push this 1
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 13
+sub
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 7
+sub
+push this 1
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Block.drawType7 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 2
+add
+push this 1
+push constant 2
+add
+push this 0
+push this 2
+add
+push constant 3
+sub
+push this 1
+push this 3
+add
+push constant 3
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 10
+add
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push this 2
+add
+push constant 10
+sub
+push this 1
+push constant 12
+add
+push constant 3
+call Screen.drawCircle 3
+pop temp 0
+push this 0
+push constant 7
+add
+push this 1
+push constant 4
+add
+push this 0
+push constant 12
+add
+push this 1
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 13
+sub
+push this 1
+push constant 4
+add
+push this 0
+push this 2
+add
+push constant 7
+sub
+push this 1
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push constant 8
+add
+push this 1
+push constant 20
+add
+push this 0
+push this 2
+add
+push constant 8
+sub
+push this 1
+push constant 24
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 10
+add
+push this 1
+push constant 21
+add
+push this 0
+push this 2
+add
+push constant 10
+sub
+push this 1
+push constant 23
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Block.drawBonusType1 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 16
+add
+push this 1
+push constant 16
+add
+push constant 8
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 16
+add
+push this 1
+push constant 16
+add
+push constant 4
+call Screen.drawCircle 3
+pop temp 0
+push constant 0
+return
+function Block.drawBonusType2 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 7
+add
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push constant 8
+add
+call Screen.drawRectangle 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 5
+sub
+push this 1
+push constant 8
+add
+push this 0
+push constant 6
+add
+push this 1
+push this 3
+add
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 4
+sub
+push this 1
+push constant 8
+add
+push this 0
+push constant 7
+add
+push this 1
+push this 3
+add
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push constant 4
+add
+push this 1
+push constant 8
+add
+push this 0
+push this 2
+add
+push constant 7
+sub
+push this 1
+push this 3
+add
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push constant 3
+add
+push this 1
+push constant 8
+add
+push this 0
+push this 2
+add
+push constant 8
+sub
+push this 1
+push this 3
+add
+push constant 10
+sub
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push constant 6
+add
+push this 1
+push this 3
+add
+push constant 10
+sub
+push this 0
+push constant 15
+add
+push this 1
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push constant 5
+add
+push this 1
+push this 3
+add
+push constant 10
+sub
+push this 0
+push constant 14
+add
+push this 1
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 7
+sub
+push this 1
+push this 3
+add
+push constant 10
+sub
+push this 0
+push constant 15
+add
+push this 1
+call Screen.drawLine 4
+pop temp 0
+push this 0
+push this 2
+add
+push constant 6
+sub
+push this 1
+push this 3
+add
+push constant 10
+sub
+push this 0
+push constant 16
+add
+push this 1
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+return
+function Block.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return

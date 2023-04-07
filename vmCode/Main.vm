@@ -1,0 +1,44 @@
+function Main.main 2
+call Settings.new 0
+pop local 1
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+push constant 300
+call Sys.wait 1
+pop temp 0
+push local 1
+call MainMenu.ShowMenu 1
+pop temp 0
+push local 1
+call GameCycle.new 1
+pop local 0
+push local 0
+call GameCycle.game 1
+pop temp 0
+push local 0
+call GameCycle.dispose 1
+pop temp 0
+push constant 500
+call Sys.wait 1
+pop temp 0
+label WHILE_EXP1
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto WHILE_END1
+push constant 10
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP1
+label WHILE_END1
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+call Settings.dispose 1
+pop temp 0
+push constant 0
+return

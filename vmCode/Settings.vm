@@ -1,0 +1,275 @@
+function Settings.new 0
+push constant 11
+call Memory.alloc 1
+pop pointer 0
+push constant 1
+call String.new 1
+push constant 97
+call String.appendChar 2
+pop this 10
+push pointer 0
+call Settings.setStandartMode 1
+pop temp 0
+push pointer 0
+return
+function Settings.setStandartMode 0
+push argument 0
+pop pointer 0
+push constant 145
+pop this 0
+push constant 3
+pop this 1
+push constant 3
+pop this 2
+push constant 2
+pop this 3
+push constant 20
+pop this 4
+push constant 70
+pop this 5
+push constant 10
+pop this 6
+push constant 1
+pop this 7
+push constant 1
+pop this 8
+push constant 9
+pop this 9
+push this 10
+call String.dispose 1
+pop temp 0
+push constant 6
+call String.new 1
+push constant 110
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 109
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+pop this 10
+push constant 0
+return
+function Settings.CheckIfCorrect 1
+push argument 2
+push argument 0
+lt
+push argument 2
+push argument 1
+gt
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 15
+call String.new 1
+push constant 73
+call String.appendChar 2
+push constant 110
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 111
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+push constant 99
+call String.appendChar 2
+push constant 116
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 118
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
+pop local 0
+push local 0
+call Output.printString 1
+pop temp 0
+push local 0
+call String.dispose 1
+pop temp 0
+push constant 0
+return
+goto IF_END0
+label IF_FALSE0
+push constant 0
+not
+return
+label IF_END0
+function Settings.getMaxPlayerJumpHeight 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Settings.setMaxPlayerJumpHeight 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 2000
+push argument 1
+call Settings.CheckIfCorrect 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+pop this 0
+label IF_FALSE0
+push constant 0
+return
+function Settings.getPlayerHorizontalSpeed 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Settings.setPlayerHorizontalSpeed 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return
+function Settings.getPlayerJumpSpeed 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Settings.setPlayerJumpSpeed 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 2
+push constant 0
+return
+function Settings.getPlayerFallSpeed 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Settings.setPlayerFallSpeed 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
+return
+function Settings.getBlockMovementPeriod 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Settings.setBlockMovementPeriod 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 4
+push constant 0
+return
+function Settings.getNewBlockPeriod 0
+push argument 0
+pop pointer 0
+push this 5
+return
+function Settings.setNewBlockPeriod 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 5
+push constant 0
+return
+function Settings.getBonusBlockRarity 0
+push argument 0
+pop pointer 0
+push this 6
+return
+function Settings.setBonusBlockRarity 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 6
+push constant 0
+return
+function Settings.getStandartBlockStyleType 0
+push argument 0
+pop pointer 0
+push this 7
+return
+function Settings.setStandartBlockStyleType 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 7
+push argument 1
+call Settings.CheckIfCorrect 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+pop this 7
+label IF_FALSE0
+push constant 0
+return
+function Settings.getBonusBlockStyleType 0
+push argument 0
+pop pointer 0
+push this 8
+return
+function Settings.setBonusBlockStyleType 0
+push argument 0
+pop pointer 0
+push constant 1
+push constant 2
+push argument 1
+call Settings.CheckIfCorrect 3
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+pop this 8
+label IF_FALSE0
+push constant 0
+return
+function Settings.getStandartTickDelay 0
+push argument 0
+pop pointer 0
+push this 9
+return
+function Settings.setStandartTickDelay 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 9
+push constant 0
+return
+function Settings.getMod 0
+push argument 0
+pop pointer 0
+push this 10
+return
+function Settings.dispose 0
+push argument 0
+pop pointer 0
+push this 10
+call String.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
