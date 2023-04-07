@@ -1,7 +1,4 @@
 class MainMenu {
-    //static int x1, y1, x2, y2, x3, y3;
-    //static string title, comment, message;
-
     function void information(int y1, int x1, int y2, int x2, int y3, int x3, String title, String comment, String message) {
         do Output.moveCursor(y1, x1);
         do Output.printString(title);
@@ -38,7 +35,7 @@ class MainMenu {
         return;
     }
 
-    function void randomKey() {
+    function void bonusBlocks() {
         do MainMenu.window(4, 85, 225, 125);
         do MainMenu.information(8, 4, 0, 0, 10, 1, "bonus block type", "", "to change in 1-2, press [k]");
         return;
@@ -102,7 +99,6 @@ class MainMenu {
         do Output.printInt(currentValue);
         do Output.moveCursor(1, 0);
         let message = "new value is ";
-        //do Output.printString();
         let newValue = Keyboard.readInt(message);
         do message.dispose();
         do MainMenu.displayCatalog();
@@ -110,10 +106,9 @@ class MainMenu {
     }
 
     function void displayCatalog(){
-        do Screen.setColor(false);
-        do Screen.drawRectangle(0, 0, 511, 255);
+        do Screen.clearScreen();
         do MainMenu.blockType();
-        do MainMenu.randomKey();
+        do MainMenu.bonusBlocks();
         do MainMenu.ticks();
         do MainMenu.difficulty();
         do MainMenu.play();
@@ -121,13 +116,8 @@ class MainMenu {
     }
 
     function void ShowMenu(Settings sets) {
-        var char key;
-        do Screen.clearScreen();
-        do MainMenu.blockType();
-        do MainMenu.randomKey();
-        do MainMenu.ticks();
-        do MainMenu.difficulty();
-        do MainMenu.play();
+        var char key;     
+        do MainMenu.displayCatalog();
         let key = 0;
         while (~(key = 80)) {   //'p'
             let key = Keyboard.keyPressed();
@@ -156,8 +146,7 @@ class MainMenu {
                 do sets.setStandartTickDelay(MainMenu.GetIntValueFromUser(sets.getStandartTickDelay()));
             }
             if (key = 68) { //'d'
-                do Screen.setColor(false);
-                do Screen.drawRectangle(0, 0, 511, 255);
+                do Screen.clearScreen();
                 do MainMenu.examples();
                 do MainMenu.playerParameters();
                 do MainMenu.dropDelay();
@@ -168,8 +157,7 @@ class MainMenu {
             }
         }
         do Sys.wait(200);
-        do Screen.setColor(false);
-        do Screen.drawRectangle(0, 0, 511, 255);
-        return; // start geme
+        do Screen.clearScreen();
+        return; // start game
     }
 }
