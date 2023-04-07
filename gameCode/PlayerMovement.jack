@@ -161,7 +161,7 @@ class PlayerMovement{
         var Block block;
         let playerX = playerCoordinates.getX();
         let playerY = playerCoordinates.getY();
-        let row = playerY + playerHeight / blockHeight;
+        let row = playerY / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
@@ -170,7 +170,7 @@ class PlayerMovement{
                 return false;
             }
         }
-        let row = playerY / blockHeight;
+        let row = playerY + playerHeight / blockHeight;
         let col = playerX / blockWidth;
         let tempArr = blockArr[row];
         if (~(tempArr[col] = 0)){
@@ -234,6 +234,64 @@ class PlayerMovement{
             }
         }
         return true;
+    }
+
+    method bool CheckTopLeft(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        var Block block;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY / blockHeight;
+        let col = playerX /blockWidth;
+        let tempArr = blockArr[row];
+        return CheckBlock(tempArr[col]);
+    }
+
+    method bool CheckTopRight(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        var Block block;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY / blockHeight;
+        let col = playerX + playerWidth /blockWidth;
+        let tempArr = blockArr[row];
+        return CheckBlock(tempArr[col]);
+    }
+
+    method bool CheckDownLeft(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        var Block block;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX /blockWidth;
+        let tempArr = blockArr[row];
+        return CheckBlock(tempArr[col]);
+    }
+
+    method bool CheckDownRight(){
+        var int playerX, playerY, row, col;
+        var Array tempArr;
+        var Block block;
+        let playerX = playerCoordinates.getX();
+        let playerY = playerCoordinates.getY();
+        let row = playerY + playerHeight / blockHeight;
+        let col = playerX + playerWidth /blockWidth;
+        let tempArr = blockArr[row];
+        return CheckBlock(tempArr[col]);
+    }
+
+    method bool CheckBlock(Block block){
+        if (~(block = 0)){
+            if (block.getType() = 0){
+                return false;
+            }
+        }
+        return true;
+
     }
 
     method Point getPlayerArrCoordinates(){
